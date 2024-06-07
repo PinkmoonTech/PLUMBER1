@@ -19,14 +19,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    backgroundColor: 'lightpink',
+    backgroundColor: '#b0c4de',
     padding: 20,
     alignItems: 'center',
+    // marginBottom:20
   },
   footerText: {
     fontSize: 10,
     color: 'white',
     marginBottom: 2,
+    // paddingTop:10
   },
   link: {
     textDecorationLine: 'none',

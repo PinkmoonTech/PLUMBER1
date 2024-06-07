@@ -43,15 +43,7 @@ const Home = ({ navigation }) => {
           <Text style={styles.overlayText}>A Platform for Customer to enable right service</Text>
         </ImageBackground>
       </View>
- 
-      
-     
-      {/* <View>
-      <Text style={styles.middleText}>A Platform for Customer to enable right service</Text>
-      </View> */}
-      <View style={styles.footerContainer}>
-        <Footer />
-      </View>
+      <Footer/>
     </View>
   );
 };
@@ -65,7 +57,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    backgroundColor: "#ffb6c1",
+    backgroundColor: "#b0c4de",
     paddingVertical: 10,
     paddingHorizontal: 1,
     flexDirection: "row",
@@ -115,14 +107,8 @@ const styles = StyleSheet.create({
     // paddingBottom:50
     paddingTop:0,
     paddingRight:290,
-    
-    
    
   },
-  footerContainer: {
-    width: "100%",
-  },
-
   italic: {
     fontStyle: "italic",
     fontSize: 20,
@@ -133,6 +119,9 @@ const styles = StyleSheet.create({
     marginRight: 5,
     color:"green"
   },
+  // footersContainer: {
+  //   width: "100%",
+  // },
 });
 
 export default Home;

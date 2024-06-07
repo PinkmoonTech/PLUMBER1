@@ -1,19 +1,22 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState,useEffect } from "react";
+import { View, Text, TextInput, Button, Image, StyleSheet, ScrollView, TouchableOpacity, Dimensions, PixelRatio, Platform } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Footer from "./Footer";
 import Header from "./Header";
+
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+
+const scale = (size) => (windowWidth / 320) * size;
+const normalize = (size) => {
+  const newSize = scale(size);
+  if (Platform.OS === 'ios') {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize));
+  } else {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+  }
+};
 
 const RegistrationScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -22,16 +25,34 @@ const RegistrationScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [altPhoneNumber, setAltPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
-  const[country,setCountry]=useState("");
+  const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [identityCard, setIdentityCard] = useState("adhaar"); // Default value
   const [idNumber, setIdNumber] = useState("");
-  const [idProofImage, setIdProofImage] = useState(null); // Image URI
+  const [idProofImage, setIdProofImage] = useState(""); // Image URI
   const [charges, setCharges] = useState("");
-  const [photo, setPhoto] = useState(null); // Image URI
+  const [photo, setPhoto] = useState(""); // Image URI
   const [error, setError] = useState(""); // To display errors
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const { width, height } = Dimensions.get('window');
+      setWindowWidth(width);
+      setWindowHeight(height);
+    };
+
+    Dimensions.addEventListener('change', updateDimensions);
+    return () => {
+      Dimensions.removeEventListener('change', updateDimensions);
+    };
+  }, []);
+
+  const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
+  const [windowHeight, setWindowHeight] = useState(Dimensions.get('window').height);
+  
+
 
   // Function to handle ID proof image upload
   const handleIdProofUpload = async () => {
@@ -43,13 +64,18 @@ const RegistrationScreen = ({ navigation }) => {
     });
     if (!result.cancelled) {
       setIdProofImage(result.uri);
+      alert("Photo uploaded successfully"); // Show success message
+    } else {
+      alert("Photo upload cancelled or failed"); // Show failure message
     }
   };
+
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || dob;
     setShowDatePicker(false);
     setDob(currentDate);
   };
+
   const onFocusDate = () => {
     setShowDatePicker(true);
   };
@@ -65,62 +91,80 @@ const RegistrationScreen = ({ navigation }) => {
 
     if (!result.cancelled) {
       setPhoto(result.uri);
+      alert("Photo uploaded successfully"); // Show success message
+    } else {
+      alert("Photo upload cancelled or failed"); // Show failure message
     }
   };
 
-  const handleRegistration = () => {
+  const handleRegistration = async () => {
     setError(""); // Clear previous errors
 
     // Validate input
-    // if (!name || !phoneNumber) {
-    //   setError("Name and phone number are required");
-    //   return;
-    // }
+    if (!name || !phoneNumber) {
+      setError("Name and phone number are required");
+      return;
+    }
 
-    // Send registration data to backend
-    const handleRegistration = () => {
-      const registrationData = {
-        name,
-        dob,
-        phone_number: phoneNumber,
-        alt_phone_number,
-        email,
-        country,
-        state,
-        city,
-        address,
-        identity_card,
-        id_number,
-        id_proof_image_url: idProofImage,
-        charges,
-        photo_url: photo
-      };
-  
-      axios.post('http://your_backend_url:3000/register', registrationData)
-        .then(response => {
-          console.log('Registration successful');
-          // Handle success, e.g., navigate to another screen
-        })
-        .catch(error => {
-          console.error('Error registering:', error);
-          // Handle error, e.g., display error message
-        });
-    };
-  
-    // Remaining code...
-  
-    
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("dob", dob.toISOString().split("T")[0]); // Format date as YYYY-MM-DD
+    formData.append("phoneNumber", phoneNumber);
+    formData.append("altPhoneNumber", altPhoneNumber);
+    formData.append("email", email);
+    formData.append("country", country);
+    formData.append("state", state);
+    formData.append("city", city);
+    formData.append("address", address);
+    formData.append("identityCard", identityCard);
+    formData.append("idNumber", idNumber);
+    formData.append("charges", charges);
+
+    if (idProofImage) {
+      const idProofFileName = idProofImage.split("/").pop();
+      const idProofFileType = idProofFileName.split(".").pop();
+      formData.append("idProofImage", {
+        uri: idProofImage,
+        name: idProofFileName,
+        type: `image/${idProofFileType}`,
+      });
+    }
+
+    if (photo) {
+      const photoFileName = photo.split("/").pop();
+      const photoFileType = photoFileName.split(".").pop();
+      formData.append("photo", {
+        uri: photo,
+        name: photoFileName,
+        type: `image/${photoFileType}`,
+      });
+    }
+
+    try {
+      const response = await fetch("http://192.168.0.115:3000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert("Registration successful");
+      } else {
+        setError(result.error || "Registration failed");
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again later.");
+    }
   };
 
   return (
-    <View>
-      <View style={styles.headerContainer}>
-        <Header />
-      </View>
+    <View style={{ flex: 1 }}>
+      <Header />
       <ScrollView contentContainerStyle={styles.container}>
-        {/* <Header /> */}
-
-        <Text style={styles.header}>Registration </Text>
+        <Text style={styles.header}>Registration</Text>
         {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
         <TextInput
           style={styles.input}
@@ -130,7 +174,7 @@ const RegistrationScreen = ({ navigation }) => {
         />
 
         <TouchableOpacity // Use TouchableOpacity for date selection
-          style={styles.dateofbirthContainer}
+          style={styles.dateOfBirthContainer}
           onPress={onFocusDate} // Open date picker on press
         >
           <TextInput
@@ -231,7 +275,7 @@ const RegistrationScreen = ({ navigation }) => {
           placeholder="Address"
           value={address}
           onChangeText={setAddress}
-          multiline={true} 
+          multiline={true}
           numberOfLines={4}
         />
 
@@ -252,8 +296,7 @@ const RegistrationScreen = ({ navigation }) => {
           value={idNumber}
           onChangeText={setIdNumber}
         />
-        {/* <Button title="Upload ID Proof" onPress={handleIdProofUpload} style={{ marginBottom: 20 }} /> */}
-        <View style={styles.uploadidContainer}>
+        <View style={styles.uploadContainer}>
           <Button title="Upload ID Proof" onPress={handleIdProofUpload} />
         </View>
 
@@ -267,114 +310,79 @@ const RegistrationScreen = ({ navigation }) => {
           onChangeText={setCharges}
           keyboardType="numeric"
         />
-        <View style={styles.uploadphotoContainer}>
+        <View style={styles.uploadContainer}>
           <Button
             title="Upload Passport-size Photo"
             onPress={handlePhotoUpload}
           />
         </View>
         {photo && <Image source={{ uri: photo }} style={styles.image} />}
-        <View style={styles.submitCointainer}>
+        <View style={styles.submitContainer}>
           <Button title="Submit" onPress={handleRegistration} />
         </View>
       </ScrollView>
-      <View style={styles.footerContainer}>
-        <Footer />
-      </View>
+      <Footer />
     </View>
   );
 };
-// headerCointainer:{
-//   width:"100%"
-// }
+
 const styles = StyleSheet.create({
   container: {
-    // flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
-    minHeight: "100vh",
-    overflow: "auto",
+    padding: normalize(20),
   },
-
   header: {
     fontWeight: "bold",
-    fontSize: 18,
-    marginBottom: 20,
+    fontSize: normalize(18),
+    marginBottom: normalize(20),
   },
   input: {
-    height: 40,
+    height: normalize(40),
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
-    padding: 8,
-    marginBottom: 12,
-    width: "100%",
+    padding: normalize(8),
+    marginBottom: normalize(12),
+    width: windowWidth * 0.9,
   },
-
-  // picker: {
-  //   height: 5,
-  //   width: "10%",
-  //   marginBottom: 12,
-
-  // },
   image: {
-    width: 100,
-    height: 100,
-    marginVertical: 10,
+    width: normalize(100),
+    height: normalize(100),
+    marginVertical: normalize(10),
   },
-  uploadidContainer: {
-    marginBottom: 10,
-    width: "100%",
+  uploadContainer: {
+    marginBottom: normalize(10),
+    width: windowWidth * 0.9,
     backgroundColor: "#8b4513",
   },
-  uploadphotoContainer: {
-    marginBottom: 10,
-    width: "100%",
-    backgroundColor: "#8b4513",
-  },
-
-  footerContainer: {
-    width: "100%",
-  },
-
-  submitCointainer: {
-    marginBottom: 50,
-    width: "100%",
+  submitContainer: {
+    marginBottom: normalize(50),
+    width: windowWidth * 0.9,
   },
   picker: {
-    height: 20,
+    height: normalize(40),
     width: "100%",
-    marginBottom: 12,
-    paddingBottom: 10,
-    paddingTop: 0,
+    marginBottom: normalize(12),
   },
   inputContainer: {
-    width: "100%",
-    marginBottom: 12,
+    width: windowWidth * 0.9,
+    marginBottom: normalize(12),
     borderWidth: 1,
     borderRadius: 5,
     borderColor: "gray",
-    // padding: 10,
-    paddingBottom: 20,
-
-    aligntext: "center",
-    paddingLeft: 0,
+    padding: normalize(1),
   },
-  dateofbirthContainer: {
-    width: "100%",
-    marginBottom: 18,
+  dateOfBirthContainer: {
+    width: windowWidth * 0.9,
+    marginBottom: normalize(18),
     borderWidth: 1,
     borderRadius: 5,
     borderColor: "gray",
-    padding: 10,
-  },
-  headerContainer: {
-    width: "100%",
-    marginTop: 20,
+    padding: normalize(8),
   },
   textArea: {
-    height: 80, // Set desired height
+    height: normalize(60),
   },
 });
 
