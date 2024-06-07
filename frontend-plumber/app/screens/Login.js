@@ -101,12 +101,7 @@ const Login = () => {
   console.log("Logging in with", phoneNumber, pin);
 
   return (
-    
     <View style={styles.container}>
-      {/* <View style={styles.headerContainer}>
-        <Header/>
-      </View> */}
-     
       <Text style={styles.title}>{isLogin ? "Login " : "Signup "}</Text>
       <View style={styles.formContainer}>
         <View style={styles.slideControls}>
@@ -345,11 +340,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "lightgrey",
   },
-  // headerContainer:{
-  //   flex:1,
-  //   marginBottom: 50
+  // header: {
 
-  // }
+  //   height: 10,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   marginTop:1,
+  //   marginBottom:320,
+  //   paddingLeft:0,
+  // },
+
+  // headerText: {
+  //   color: "#fff",
+  //   fontSize: 20,
+  //   fontWeight: "bold",
+  // },
 });
 
 export default Login;
