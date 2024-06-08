@@ -1,17 +1,30 @@
-import React, { useState,useEffect } from "react";
-import { View, Text, TextInput, Button, Image, StyleSheet, ScrollView, TouchableOpacity, Dimensions, PixelRatio, Platform } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+  PixelRatio,
+  Platform,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Footer from "./Footer";
 import Header from "./Header";
+import * as FileSystem from "expo-file-system";
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
 const scale = (size) => (windowWidth / 320) * size;
 const normalize = (size) => {
   const newSize = scale(size);
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === "ios") {
     return Math.round(PixelRatio.roundToNearestPixel(newSize));
   } else {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
@@ -38,7 +51,7 @@ const RegistrationScreen = ({ navigation }) => {
 
   useEffect(() => {
     const updateDimensions = () => {
-      const { width, height } = Dimensions.get('window');
+      const { width, height } = Dimensions.get("window");
       setWindowWidth(width);
       setWindowHeight(height);
     };
@@ -49,24 +62,43 @@ const RegistrationScreen = ({ navigation }) => {
     };
   }, []);
 
-  const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
-  const [windowHeight, setWindowHeight] = useState(Dimensions.get('window').height);
-  
-
+  const [windowWidth, setWindowWidth] = useState(
+    Dimensions.get("window").width
+  );
+  const [windowHeight, setWindowHeight] = useState(
+    Dimensions.get("window").height
+  );
 
   // Function to handle ID proof image upload
   const handleIdProofUpload = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    const results = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-    if (!result.cancelled) {
-      setIdProofImage(result.uri);
-      alert("Photo uploaded successfully"); // Show success message
-    } else {
-      alert("Photo upload cancelled or failed"); // Show failure message
+    // console.log("Base64 data:", results.assets[0].uri);
+    if (!results.cancelled && results.assets[0].uri) {
+      // Check if URI is valid
+      console.log("Base64 data:", results); // Add this line
+      try {
+        const base64 = await FileSystem.readAsStringAsync(
+          results.assets[0].uri,
+          {
+            encoding: FileSystem.EncodingType.Base64,
+          }
+        );
+        setIdentityCard(base64); // Add this line
+        // Other code
+      } catch (error) {
+        console.error("Error reading file:", error);
+      }
     }
   };
 
@@ -159,10 +191,7 @@ const RegistrationScreen = ({ navigation }) => {
       setError("An error occurred. Please try again later.");
     }
   };
-
-
   
-
   return (
     <View style={{ flex: 1 }}>
       <Header />
