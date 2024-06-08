@@ -2,9 +2,29 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
+const multer = require('multer');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Multer setup for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+const upload = multer({ storage: storage });
+
+
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -73,6 +93,41 @@ app.post('/signup', (req, res) => {
     }
   });
 });
+
+// API endpoint for registration
+app.post('/register', upload.fields([{ name: 'idProofImage', maxCount: 1 }, { name: 'photo', maxCount: 1 }]), (req, res) => {
+  const {
+    name, dob, phoneNumber, altPhoneNumber, email,
+    country, state, city, address, identityCard,
+    idNumber, charges
+  } = req.body;
+
+  const idProofImage = req.files['idProofImage'] ? `/uploads/${req.files['idProofImage'][0].filename}` : null;
+  const photo = req.files['photo'] ? `/uploads/${req.files['photo'][0].filename}` : null;
+
+  const query = `
+    INSERT INTO registration (
+      name, dob, phoneNumber, altPhoneNumber, email,
+      country, state, city, address, identityCard,
+      idNumber, idProofImage, charges, photo
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  const values = [
+    name, dob, phoneNumber, altPhoneNumber, email,
+    country, state, city, address, identityCard,
+    idNumber, idProofImage, charges, photo
+  ];
+
+  connection.query(query, values, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Failed to register' });
+    }
+    res.status(200).json({ message: 'Registration successful', id: results.insertId });
+  });
+});
+
 
 // Start the server
 app.listen(PORT, () => {
