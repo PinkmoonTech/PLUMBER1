@@ -43,9 +43,9 @@ const RegistrationScreen = ({ navigation }) => {
       setWindowHeight(height);
     };
 
-    Dimensions.addEventListener('change', updateDimensions);
+    // Dimensions.addEventListener('change', updateDimensions);
     return () => {
-      Dimensions.removeEventListener('change', updateDimensions);
+      // Dimensions.removeEventListener('change', updateDimensions);
     };
   }, []);
 
