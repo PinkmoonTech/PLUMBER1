@@ -151,9 +151,9 @@ app.post(
       state,
       city,
       address,
-      identityCard,
-      idNumber,
       idProofImage,
+      idNumber,
+      identityCard,
       charges,
       photo,
     ];
