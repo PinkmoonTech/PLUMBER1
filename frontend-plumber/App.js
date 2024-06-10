@@ -22,7 +22,7 @@ const App = () => {
 
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Registration">
           <Stack.Screen name=" " component={Home} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Registration" component={RegistrationScreen} />

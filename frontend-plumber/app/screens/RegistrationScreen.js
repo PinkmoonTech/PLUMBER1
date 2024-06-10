@@ -410,7 +410,8 @@ const styles = StyleSheet.create({
   picker: {
     height: normalize(40),
     width: "100%",
-    marginBottom: normalize(12),
+    marginBottom: normalize(2),
+    
   },
   inputContainer: {
     width: windowWidth * 0.9,
@@ -419,6 +420,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "gray",
     padding: normalize(1),
+    alignItems: 'center',
   },
   dateOfBirthContainer: {
     width: windowWidth * 0.9,
