@@ -25,8 +25,8 @@ const Login = () => {
   };
 
   const handleLogin = () => {
-    if (phoneNumber.length !== 10) {
-      Alert.alert("Error", "Phone number must be 10 digits long");
+    if (phoneNumber.length !== 12) {
+      Alert.alert("Error", "Phone number must be 12 digits long");
       return;
     }
     if (pin.length !== 6) {
@@ -60,8 +60,8 @@ const Login = () => {
   };
 
   const handleSignup = () => {
-    if (phoneNumber.length !== 10) {
-      Alert.alert("Error", "Phone number must be 10 digits long");
+    if (phoneNumber.length !== 12) {
+      Alert.alert("Error", "Phone number must be 12 digits long");
       return;
     }
     if (pin.length !== 6 || confirmPin.length !== 6) {
@@ -132,7 +132,7 @@ const Login = () => {
             <TextInput
               placeholder="Phone Number"
               keyboardType="number-pad"
-              maxLength={10}
+              maxLength={12}
               value={phoneNumber}
               onChangeText={setPhoneNumber}
               style={styles.input}

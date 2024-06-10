@@ -15,6 +15,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as ImageManipulator from 'expo-image-manipulator';
 import Footer from "./Footer";
 import Header from "./Header";
 import * as FileSystem from "expo-file-system";
@@ -94,7 +95,7 @@ const RegistrationScreen = ({ navigation }) => {
             encoding: FileSystem.EncodingType.Base64,
           }
         );
-        setIdentityCard(base64); // Add this line
+        console.log(base64); // Add this line
         // Other code
       } catch (error) {
         console.error("Error reading file:", error);
@@ -132,11 +133,12 @@ const RegistrationScreen = ({ navigation }) => {
   const handleRegistration = async () => {
     setError(""); // Clear previous errors
 
+
     // Validate input
-    if (!name || !phoneNumber) {
-      setError("Name and phone number are required");
-      return;
-    }
+    // if (!name || !phoneNumber) {
+    //   setError("Name and phone number are required");
+    //   return;
+    // }
 
     const formData = new FormData();
     formData.append("name", name);

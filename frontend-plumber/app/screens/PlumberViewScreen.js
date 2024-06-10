@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, Image, StyleSheet, ScrollView, Dimensions, PixelRatio, Platform, TouchableOpacity } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons for search icon
-import axios from 'axios'; // Import axios for making HTTP requests
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  Linking,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  PixelRatio,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
+// import { Linking } from "react-native";
+
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import axios from "axios"; // Import axios for making HTTP requests
 import Footer from "./Footer";
 import Header from "./Header";
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
 // Helper functions to scale and normalize dimensions
 const scale = (size) => (windowWidth / 320) * size;
 const normalize = (size) => {
   const newSize = scale(size);
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === "ios") {
     return Math.round(PixelRatio.roundToNearestPixel(newSize));
   } else {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
@@ -20,7 +34,8 @@ const normalize = (size) => {
 
 const PlumberViewScreen = ({ navigation }) => {
   const [registrationData, setRegistrationData] = useState([]); // State to store registration data
-  const [searchQuery, setSearchQuery] = useState(''); // State to store search query
+  const [searchQuery, setSearchQuery] = useState(""); // State to store search query
+
 
   useEffect(() => {
     // Fetch registration data when component mounts
@@ -30,11 +45,13 @@ const PlumberViewScreen = ({ navigation }) => {
   // Function to fetch registration data from backend
   const fetchRegistrationData = async () => {
     try {
-      const response = await axios.get('http://192.168.0.115:3000/registrations');
+      const response = await axios.get(
+        "http://192.168.0.115:3000/registrations"
+      );
       console.log(response.data); // Debug: Log fetched data
       setRegistrationData(response.data); // Set registration data in state
     } catch (error) {
-      console.error('Error fetching registration data:', error);
+      console.error("Error fetching registration data:", error);
     }
   };
 
@@ -46,11 +63,13 @@ const PlumberViewScreen = ({ navigation }) => {
   // Function to render each registration as a card
   const renderRegistrationCards = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const isPlumberSearch = ['plumber', 'plumbers'].includes(lowerCaseQuery);
+    const isPlumberSearch = ["plumber", "plumbers"].includes(lowerCaseQuery);
 
     // Filter registration data based on search query
-    const filteredData = registrationData.filter((registration) =>
-      isPlumberSearch || registration.name.toLowerCase().includes(lowerCaseQuery)
+    const filteredData = registrationData.filter(
+      (registration) =>
+        isPlumberSearch ||
+        registration.name.toLowerCase().includes(lowerCaseQuery)
     );
 
     if (filteredData.length === 0) {
@@ -59,34 +78,68 @@ const PlumberViewScreen = ({ navigation }) => {
 
     return filteredData.map((registration, index) => (
       <View key={index} style={styles.card}>
-        <Image source={{ uri: registration.photo }} style={styles.cardImage} />
+        {/* <Image source={{ uri: registration.photo }} style={styles.cardImage} /> */}
         <Text style={styles.cardText}>{registration.name}</Text>
         <Text style={styles.cardText}>{registration.phoneNumber}</Text>
-        <Button title="Send" onPress={() => handleSend(registration)} />
+        {/* <Text style={styles.cardText}>{registration.charges}</Text> */}
+        <Text style={styles.cardText}>{registration.city}</Text>
+
+        <View style={styles.buttonContainer}>
+          <MaterialCommunityIcons
+            name="send-circle"
+            size={38}
+            color="black"
+            onPress={() => handleSend(registration.phoneNumber)}
+          />
+        </View>
       </View>
     ));
   };
 
-  // Function to handle sending data
-  const handleSend = (registration) => {
-    // Implement sending functionality
-    console.log('Sending data:', registration);
+  const handleSend = (phoneNumber) => {
+    const defaultMessage = encodeURIComponent("Hello, I am customer I need service regarding repair please contact me or message me...");
+    const whatsappLink = `whatsapp://send?phone=${phoneNumber}&text=${defaultMessage}`;
+
+    Linking.canOpenURL(whatsappLink)
+      .then((supported) => {
+        if (!supported) {
+          console.log("WhatsApp is not installed on this device");
+        } else {
+          return Linking.openURL(whatsappLink);
+        }
+      })
+      .then(() => {
+        console.log("WhatsApp opened successfully");
+      })
+      .catch((error) => {
+        console.error("Error opening WhatsApp:", error);
+      });
   };
 
   return (
     <View style={{ flex: 1 }}>
       <Header />
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.header}>PLUMBER</Text>
-        <TouchableOpacity style={styles.searchBoxContainer} onPress={() => this.textInput.focus()}>
+        {/* <Text style={styles.header}></Text> */}
+        <TouchableOpacity
+          style={styles.searchBoxContainer}
+          onPress={() => this.textInput.focus()}
+        >
           <TextInput
-            ref={(input) => { this.textInput = input; }}
+            ref={(input) => {
+              this.textInput = input;
+            }}
             style={styles.searchBox}
             placeholder="Search Plumbers"
             value={searchQuery}
             onChangeText={handleSearch}
           />
-          <MaterialIcons name="search" size={24} color="black" style={styles.searchIcon} />
+          <MaterialIcons
+            name="search"
+            size={24}
+            color="black"
+            style={styles.searchIcon}
+          />
         </TouchableOpacity>
         {registrationData.length === 0 ? (
           <Text>Loading plumber details...</Text>
@@ -101,32 +154,33 @@ const PlumberViewScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
-    padding: normalize(20),
-    flexDirection: 'row', // Add this to make the cards display in a row
-    flexWrap: 'wrap', // Add this if you want the cards to wrap to the next line when they reach the edge of the screen
+    padding: normalize(10),
+    flexDirection: "row", // Add this to make the cards display in a row
+    flexWrap: "wrap", // Add this if you want the cards to wrap to the next line when they reach the edge of the screen
+    // textAlign: "left",
   },
   header: {
     fontWeight: "bold",
     fontSize: normalize(18),
     marginBottom: normalize(20),
-    textAlign: 'center', // Center the header text
-    width: '100%', // Take up full width to avoid alignment issues
+    textAlign: "center", // Center the header text
+    width: "10%", // Take up full width to avoid alignment issues
   },
   searchBoxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
     marginBottom: normalize(20),
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
-    paddingLeft:10
+    paddingLeft: 10,
+    textAlign: "left",
   },
   searchIcon: {
     padding: normalize(10),
-    
   },
   searchBox: {
     flex: 1,
@@ -136,12 +190,12 @@ const styles = StyleSheet.create({
   card: {
     width: windowWidth * 0.4,
     marginBottom: normalize(20),
-    marginLeft: normalize(15),
+    marginLeft: normalize(18),
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: normalize(1),
-    padding: normalize(10),
-    alignItems: "center",
+    padding: normalize(6),
+    alignItems: "flex-start",
   },
   cardImage: {
     width: normalize(100),
@@ -151,7 +205,12 @@ const styles = StyleSheet.create({
   },
   cardText: {
     marginBottom: normalize(5),
-    textAlign: 'center',
+    textAlign: "right",
+  },
+  buttonContainer: {
+    alignItems: "flex-end",
+    width: "100%",
+    marginTop: normalize(10),
   },
 });
 
