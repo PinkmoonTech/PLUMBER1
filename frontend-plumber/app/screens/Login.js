@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   const handleLogin = () => {
-    if (phoneNumber.length !== 12) {
+    if (phoneNumber.length !== 10) {
       Alert.alert("Error", "Phone number must be 12 digits long");
       return;
     }
@@ -132,7 +132,7 @@ const Login = () => {
             <TextInput
               placeholder="Phone Number"
               keyboardType="number-pad"
-              maxLength={12}
+              maxLength={10}
               value={phoneNumber}
               onChangeText={setPhoneNumber}
               style={styles.input}

@@ -35,6 +35,7 @@ const normalize = (size) => {
 const PlumberViewScreen = ({ navigation }) => {
   const [registrationData, setRegistrationData] = useState([]); // State to store registration data
   const [searchQuery, setSearchQuery] = useState(""); // State to store search query
+  const [sortOption, setSortOption] = useState("none"); // State to store sorting option
 
 
   useEffect(() => {
@@ -59,6 +60,10 @@ const PlumberViewScreen = ({ navigation }) => {
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
+    // Function to handle sorting option change
+    const handleSortChange = (option) => {
+      setSortOption(option);
+    };
 
   // Function to render each registration as a card
   const renderRegistrationCards = () => {
@@ -66,11 +71,23 @@ const PlumberViewScreen = ({ navigation }) => {
     const isPlumberSearch = ["plumber", "plumbers"].includes(lowerCaseQuery);
 
     // Filter registration data based on search query
-    const filteredData = registrationData.filter(
+    let filteredData = registrationData.filter(
       (registration) =>
         isPlumberSearch ||
-        registration.name.toLowerCase().includes(lowerCaseQuery)
+        registration.name.toLowerCase().includes(lowerCaseQuery) ||
+        registration.city.toLowerCase().includes(lowerCaseQuery) ||
+        registration.charges.toString().toLowerCase().includes(lowerCaseQuery)
     );
+
+    // Sort filtered data based on sort option
+    if (sortOption === "charge") {
+      filteredData.sort((a, b) => a.charges - b.charges);
+    } else if (sortOption === "location") {
+      filteredData.sort((a, b) => a.city.localeCompare(b.city));
+    }
+
+
+
 
     if (filteredData.length === 0) {
       return <Text>No plumbers found.</Text>;
@@ -78,16 +95,29 @@ const PlumberViewScreen = ({ navigation }) => {
 
     return filteredData.map((registration, index) => (
       <View key={index} style={styles.card}>
-        {/* <Image source={{ uri: registration.photo }} style={styles.cardImage} /> */}
-        <Text style={styles.cardText}>{registration.name}</Text>
-        <Text style={styles.cardText}>{registration.phoneNumber}</Text>
-        {/* <Text style={styles.cardText}>{registration.charges}</Text> */}
-        <Text style={styles.cardText}>{registration.city}</Text>
+    {/* Icons for name, phone number, charge, and location */}
+    <View style={styles.iconContainer}>
+      <MaterialIcons name="person" size={15} color="black" style={styles.icon} />
+      <Text style={styles.cardText}>{registration.name}</Text>
+    </View>
+    <View style={styles.iconContainer}>
+      <MaterialIcons name="phone" size={15} color="black" style={styles.icon} />
+      <Text style={styles.cardText}>{registration.phoneNumber}</Text>
+    </View>
+    <View style={styles.iconContainer}>
+      <MaterialCommunityIcons name="cash" size={15} color="black" style={styles.icon} />
+      <Text style={styles.cardText}>{registration.charges}</Text>
+    </View>
+    <View style={styles.iconContainer}>
+      <MaterialCommunityIcons name="map-marker" size={15} color="black" style={styles.icon} />
+      <Text style={styles.cardText}>{registration.city}</Text>
+    </View>
+
 
         <View style={styles.buttonContainer}>
           <MaterialCommunityIcons
             name="send-circle"
-            size={38}
+            size={25}
             color="black"
             onPress={() => handleSend(registration.phoneNumber)}
           />
@@ -119,6 +149,7 @@ const PlumberViewScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <Header />
+      
       <ScrollView contentContainerStyle={styles.container}>
         {/* <Text style={styles.header}></Text> */}
         <TouchableOpacity
@@ -147,6 +178,7 @@ const PlumberViewScreen = ({ navigation }) => {
           renderRegistrationCards()
         )}
       </ScrollView>
+    
       <Footer />
     </View>
   );
@@ -160,6 +192,8 @@ const styles = StyleSheet.create({
     flexDirection: "row", // Add this to make the cards display in a row
     flexWrap: "wrap", // Add this if you want the cards to wrap to the next line when they reach the edge of the screen
     // textAlign: "left",
+    paddingBottom: 100,
+    
   },
   header: {
     fontWeight: "bold",
@@ -196,22 +230,35 @@ const styles = StyleSheet.create({
     borderRadius: normalize(1),
     padding: normalize(6),
     alignItems: "flex-start",
+    backgroundColor:"#d3d3d3",
+    
   },
   cardImage: {
     width: normalize(100),
     height: normalize(100),
     marginBottom: normalize(10),
-    borderRadius: normalize(50),
+    borderRadius: normalize(1),
   },
   cardText: {
-    marginBottom: normalize(5),
+    marginBottom: normalize(1),
     textAlign: "right",
+  
   },
   buttonContainer: {
     alignItems: "flex-end",
     width: "100%",
     marginTop: normalize(10),
+  
   },
+  iconContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: normalize(2),
+  },
+  icon: {
+    marginRight: normalize(5),
+  },
+
 });
 
 export default PlumberViewScreen;

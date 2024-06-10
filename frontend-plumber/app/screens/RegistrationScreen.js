@@ -49,6 +49,7 @@ const RegistrationScreen = ({ navigation }) => {
   const [charges, setCharges] = useState("");
   const [photo, setPhoto] = useState(""); // Image URI
   const [error, setError] = useState(""); // To display errors
+  const [registrationType, setRegistrationType] = useState("plumber"); // Default registration type
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -196,10 +197,22 @@ const RegistrationScreen = ({ navigation }) => {
   
   return (
     <View style={{ flex: 1 }}>
-      <Header />
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.header}>Registration</Text>
-        {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+    <Header />
+    <ScrollView contentContainerStyle={styles.container}>
+      {/* <Text style={styles.header}>Registration</Text> */}
+      {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+
+      {/* Dropdown for selecting registration type */}
+      <View style={styles.inputContainerplumber}>
+        <Picker
+          selectedValue={registrationType}
+          style={styles.picker}
+          onValueChange={(itemValue) => setRegistrationType(itemValue)}
+        >
+          <Picker.Item label="Plumber" value="plumber" />
+          <Picker.Item label="Electrician" value="electrician" />
+        </Picker>
+      </View>
         <TextInput
           style={styles.input}
           placeholder="Name"
@@ -418,6 +431,16 @@ const styles = StyleSheet.create({
   textArea: {
     height: normalize(60),
   },
+  inputContainerplumber:{
+    width: windowWidth * 0.5,
+    marginBottom: normalize(12),
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "gray",
+    padding: normalize(1),
+    
+
+  }
 });
 
 export default RegistrationScreen;
