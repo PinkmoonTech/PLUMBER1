@@ -247,6 +247,22 @@ const RegistrationScreen = ({ navigation }) => {
           onChangeText={setPhoneNumber}
           keyboardType="phone-pad"
         />
+         <TextInput
+          style={styles.input}
+          placeholder="Pin
+          value={phoneNumber}
+          onChangeText={setPin}
+          keyboardType="phone-pad"
+        />
+         <TextInput
+          style={styles.input}
+          placeholder="confirm pin"
+          value={phoneNumber}
+          onChangeText={setConfirmPin}
+          keyboardType="phone-pad"
+        />
+
+
         <TextInput
           style={styles.input}
           placeholder="Alternative Phone Number"
@@ -434,7 +450,7 @@ const styles = StyleSheet.create({
     height: normalize(60),
   },
   inputContainerplumber:{
-    width: windowWidth * 0.5,
+    width: windowWidth * 0.9,
     marginBottom: normalize(12),
     borderWidth: 1,
     borderRadius: 5,

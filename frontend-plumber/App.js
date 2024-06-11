@@ -4,13 +4,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import RegistrationScreen from "./app/screens/RegistrationScreen";
 import PlumberViewScreen from "./app/screens/PlumberViewScreen";
-
-import LoginScreen from "./app/screens/loginpage";
 import Header from "./app/screens/Header";
 import Footer from "./app/screens/Footer";
 import Login from "./app/screens/Login";
 import Home from "./app/screens/Home";
-import ImagePickerComponent from "./app/screens/FileUpload";
+import LoginPage from "./app/screens/LoginPage";
+
 // import Header from "./Header";
 
 const Stack = createStackNavigator();
@@ -22,11 +21,13 @@ const App = () => {
 
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Registration">
-          <Stack.Screen name=" " component={Home} />
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Registration" component={RegistrationScreen} />
           <Stack.Screen name="Service i" component={PlumberViewScreen} />
+          <Stack.Screen name="LoginPage" component={LoginPage} />
+
           {/* <Stack.Screen name="Loginn" component={Header} /> */}
           {/* <Stack.Screen name="hey" component={Footer} /> */}
         </Stack.Navigator>

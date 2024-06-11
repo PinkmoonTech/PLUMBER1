@@ -1,63 +1,72 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Switch,
+  StyleSheet,
+} from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { Ionicons } from '@expo/vector-icons'; 
 
-const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [saveEmail, setSaveEmail] = useState(false);
+import Footer from "./Footer";
+import Header from "./Header";
+
+const LoginPage = ({ navigation }) => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+
+  const toggleSecureTextEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
+
 
   return (
     <View style={styles.container}>
       {/* <Text> <Icon name="home" size={50} /> </Text> */}
-      
+
       <Text style={styles.title}>Log in to your account</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Email address"
-          value={email}
-          onChangeText={setEmail}
+          placeholder="phone number"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
         />
         <View style={styles.passwordContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Password "
+            placeholder="Pin"
+            maxLength={6}
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry={secureTextEntry}
           />
-          
+          <TouchableOpacity style={styles.eyeIcon} onPress={toggleSecureTextEntry}>
+            <Ionicons name={secureTextEntry ? 'eye-off' : 'eye'} size={24} color="gray" />
+          </TouchableOpacity>
         </View>
-        <View style={styles.switchContainer}>
-          <Switch
-            value={saveEmail}
-            onValueChange={setSaveEmail}
-          />
-          <Text style={styles.switchLabel}>Save Email</Text>
-        </View>
-        <TouchableOpacity style={styles.loginButton} >
-          <Text style={styles.loginButtonText}>Log in</Text>
+        
+
+        <TouchableOpacity style={styles.loginButton}>
+          <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={styles.forgotPassword}>Forgot password</Text>
+          {/* <Text style={styles.forgotPassword}>Forgot password</Text> */}
         </TouchableOpacity>
         <Text style={styles.registerText}>
-          Haven't setup your account yet? <Text style={styles.registerLink}>Register</Text>
+        Not a member?{" "}
+        <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
+      <Text style={styles.registerLink}>Register</Text>
+    </TouchableOpacity>
         </Text>
-        <View style={styles.authMethods}>
-          <TouchableOpacity style={styles.authMethod}>
-            <Text style={styles.authMethodText}>🔒 Passcode</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.authMethod}>
-            <Text style={styles.authMethodText}>📱 Face ID®</Text>
-           
-          </TouchableOpacity>
-        </View>
       </View>
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Help  •  Terms & Conditions  •  Privacy Policy</Text>
-      </View>
+      
+      {/* <Footer/> */}
+    
     </View>
   );
 };
@@ -65,10 +74,13 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#6A1B9A',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#8fbc8f",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20,
+    flex: 1,
+    
+    
   },
   logo: {
     width: 100,
@@ -77,84 +89,63 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: '#fff',
+    color: "#fff",
     marginBottom: 20,
   },
   inputContainer: {
-    width: '100%',
-    backgroundColor: '#fff',
+    width: "100%",
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 40,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
   },
   passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
   },
-  // eyeIcon: {
-  //   marginLeft: -30,
-  // },
-  switchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
+  eyeIcon: {
+    marginLeft: -30,
+    paddingVertical:20,
+    paddingBottom:30
   },
-  switchLabel: {
-    marginLeft: 10,
-  },
+
   loginButton: {
-    width: '100%',
+    width: "100%",
     height: 40,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 10,
+    backgroundColor: "#007bff",
   },
   loginButtonText: {
-    color: '#fff',
+    color: "#fff",
+    fontSize:16
   },
   forgotPassword: {
-    color: '#6A1B9A',
+    color: "#6A1B9A",
     marginBottom: 20,
   },
   registerText: {
-    color: '#6A1B9A',
+    color: "#6A1B9A",
     marginBottom: 20,
   },
   registerLink: {
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
-  authMethods: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginBottom: 20,
-  },
-  authMethod: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  authMethodText: {
-    color: '#6A1B9A',
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 20,
-  },
-  footerText: {
-    color: '#fff',
-  },
+
+  
 });
 
-export default LoginScreen;
+export default LoginPage;

@@ -6,8 +6,13 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  Platform,
+  StatusBar
 } from "react-native";
 import Footer from "./Footer";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useImageDimensions } from "@react-native-community/hooks";
+import { Dimensions } from "react-native";
 
 const Home = ({ navigation }) => {
   return (
@@ -24,12 +29,12 @@ const Home = ({ navigation }) => {
           Service <Text style={styles.italic}>i</Text>
         </Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.signupButton}
-            onPress={() => navigation.navigate("Login")}
-          >
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+      style={styles.iconButton}
+      onPress={() => navigation.navigate("LoginPage")}
+    >
+      <MaterialIcons name="login" size={24} color="white" />
+    </TouchableOpacity>
         </View>
       </View>
 
@@ -54,6 +59,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "space-between",
+    // paddingTop:Platform.OS ==="android"? StatusBar.currentHeight:0
   },
   header: {
     width: "100%",
@@ -70,16 +76,17 @@ const styles = StyleSheet.create({
     // marginRight: 'auto',
     paddingHorizontal: 15,
     marginLeft:0,
+    paddingRight:2
   },
-  signupButton: {
-    backgroundColor: "#4169e1",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+  iconButton: {
+    backgroundColor: "#007bff", // Example color
     borderRadius: 5,
+    padding: 10,
+    paddingLeft:20,
+    paddingRight:20
   },
-  buttonText: {
-    color: "white",
-  },
+
+ 
   middleContent: {
     flex: 1,
     justifyContent: "center",
