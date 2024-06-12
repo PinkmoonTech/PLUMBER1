@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from "@expo/vector-icons";
 
 import Footer from "./Footer";
 import Header from "./Header";
@@ -18,13 +18,12 @@ const LoginPage = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-
   const toggleSecureTextEntry = () => {
     setSecureTextEntry(!secureTextEntry);
   };
 
-
   return (
+   
     <View style={styles.container}>
       {/* <Text> <Icon name="home" size={50} /> </Text> */}
 
@@ -45,28 +44,34 @@ const LoginPage = ({ navigation }) => {
             onChangeText={setPassword}
             secureTextEntry={secureTextEntry}
           />
-          <TouchableOpacity style={styles.eyeIcon} onPress={toggleSecureTextEntry}>
-            <Ionicons name={secureTextEntry ? 'eye-off' : 'eye'} size={24} color="gray" />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={toggleSecureTextEntry}
+          >
+            <Ionicons
+              name={secureTextEntry ? "eye-off" : "eye"}
+              size={24}
+              color="gray"
+            />
           </TouchableOpacity>
         </View>
-        
 
         <TouchableOpacity style={styles.loginButton}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
+
         <TouchableOpacity>
-          {/* <Text style={styles.forgotPassword}>Forgot password</Text> */}
+          <Text style={styles.forgotPassword}>Forgot password</Text>
         </TouchableOpacity>
-        <Text style={styles.registerText}>
-        Not a member?{" "}
+
         <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
-      <Text style={styles.registerLink}>Register</Text>
-    </TouchableOpacity>
-        </Text>
+          <Text style={styles.registerText}>
+            Not a member? <Text style={styles.registerLink}>Register</Text>
+          </Text>
+        </TouchableOpacity>
       </View>
-      
-      {/* <Footer/> */}
-    
+   
+    <Footer/>
     </View>
   );
 };
@@ -79,8 +84,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     flex: 1,
-    
-    
   },
   logo: {
     width: 100,
@@ -115,8 +118,8 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     marginLeft: -30,
-    paddingVertical:20,
-    paddingBottom:30
+    paddingVertical: 20,
+    paddingBottom: 30,
   },
 
   loginButton: {
@@ -131,21 +134,25 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     color: "#fff",
-    fontSize:16
+    fontSize: 16,
   },
   forgotPassword: {
     color: "#6A1B9A",
     marginBottom: 20,
+    marginTop:10,
+    textDecorationLine: "underline",
+    alignSelf: 'flex-start', // Align text to the start of the container
+    marginLeft: 170, // Add margin to ensure it's not right at the edge
   },
   registerText: {
     color: "#6A1B9A",
     marginBottom: 20,
+    textAlign: "center", // Center text horizontally
   },
   registerLink: {
     textDecorationLine: "underline",
+    color: "red",
   },
-
-  
 });
 
 export default LoginPage;

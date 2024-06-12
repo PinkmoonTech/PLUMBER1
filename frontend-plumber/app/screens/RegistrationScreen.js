@@ -15,10 +15,11 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import * as ImageManipulator from 'expo-image-manipulator';
+import * as ImageManipulator from "expo-image-manipulator";
 import Footer from "./Footer";
 import Header from "./Header";
 import * as FileSystem from "expo-file-system";
+import ServiceCustomerCard from "./ServiceCustomerCard";
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
@@ -37,6 +38,8 @@ const RegistrationScreen = ({ navigation }) => {
   const [dob, setDob] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [pin, setPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
   const [altPhoneNumber, setAltPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
@@ -50,6 +53,11 @@ const RegistrationScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState(""); // Image URI
   const [error, setError] = useState(""); // To display errors
   const [registrationType, setRegistrationType] = useState("plumber"); // Default registration type
+  const [showRegistrationDetails, setShowRegistrationDetails] = useState(false);
+
+  const toggleRegistrationDetails = () => {
+    setShowRegistrationDetails(!showRegistrationDetails);
+  };
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -134,7 +142,6 @@ const RegistrationScreen = ({ navigation }) => {
   const handleRegistration = async () => {
     setError(""); // Clear previous errors
 
-
     // Validate input
     // if (!name || !phoneNumber) {
     //   setError("Name and phone number are required");
@@ -194,195 +201,207 @@ const RegistrationScreen = ({ navigation }) => {
       setError("An error occurred. Please try again later.");
     }
   };
-  
+
   return (
     <View style={{ flex: 1 }}>
-    <Header />
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* <Text style={styles.header}>Registration</Text> */}
-      {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+      <Header />
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Render ServiceCustomerCard */}
+        <ServiceCustomerCard onPress={toggleRegistrationDetails} />
 
-      {/* Dropdown for selecting registration type */}
-      <View style={styles.inputContainerplumber}>
-        <Picker
-          selectedValue={registrationType}
-          style={styles.picker}
-          onValueChange={(itemValue) => setRegistrationType(itemValue)}
-        >
-          <Picker.Item label="Plumber" value="plumber" />
-          <Picker.Item label="Electrician" value="electrician" />
-        </Picker>
-      </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          value={name}
-          onChangeText={setName}
-        />
+        {/* Conditional rendering of registration details */}
+        {showRegistrationDetails && (
+          <>
+            {/* <Text style={styles.header}>Registration</Text> */}
+            {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
 
-        <TouchableOpacity // Use TouchableOpacity for date selection
-          style={styles.dateOfBirthContainer}
-          onPress={onFocusDate} // Open date picker on press
-        >
-          <TextInput
-            placeholder="DD/MM/YYYY"
-            value={dob ? dob.toLocaleDateString() : ""}
-            editable={false} // Make it not editable
-          />
-        </TouchableOpacity>
+            {/* Dropdown for selecting registration type */}
+            <View style={styles.inputContainerplumber}>
+              <Picker
+                selectedValue={registrationType}
+                style={styles.picker}
+                onValueChange={(itemValue) => setRegistrationType(itemValue)}
+              >
+                <Picker.Item label="Plumber" value="plumber" />
+                <Picker.Item label="Electrician" value="electrician" />
+              </Picker>
+            </View>
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              value={name}
+              onChangeText={setName}
+            />
 
-        {showDatePicker && (
-          <DateTimePicker
-            value={dob}
-            mode="date"
-            display="default"
-            onChange={onChangeDate}
-          />
+            <TouchableOpacity // Use TouchableOpacity for date selection
+              style={styles.dateOfBirthContainer}
+              onPress={onFocusDate} // Open date picker on press
+            >
+              <TextInput
+                placeholder="DD/MM/YYYY"
+                value={dob ? dob.toLocaleDateString() : ""}
+                editable={false} // Make it not editable
+              />
+            </TouchableOpacity>
+
+            {showDatePicker && (
+              <DateTimePicker
+                value={dob}
+                mode="date"
+                display="default"
+                onChange={onChangeDate}
+              />
+            )}
+
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              keyboardType="phone-pad"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="pin"
+              value={phoneNumber}
+              onChangeText={setPin}
+              keyboardType="phone-pad"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="confirmPin"
+              value={phoneNumber}
+              onChangeText={setConfirmPin}
+              keyboardType="phone-pad"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Alternative Phone Number"
+              value={altPhoneNumber}
+              onChangeText={setAltPhoneNumber}
+              keyboardType="phone-pad"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+            <View style={styles.inputContainer}>
+              <Picker
+                selectedValue={country}
+                style={styles.picker}
+                onValueChange={(itemValue) => setCountry(itemValue)}
+              >
+                <Picker.Item label="India" value="India" />
+                <Picker.Item label="USA" value="USA" />
+                <Picker.Item label="Dubai" value="Dubai" />
+              </Picker>
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Picker
+                selectedValue={state}
+                style={styles.picker} // Keeping the style consistent with other inputs
+                onValueChange={(itemValue) => setState(itemValue)}
+              >
+                <Picker.Item label="Select State" value="" />
+                <Picker.Item label="Andhra Pradesh" value="Andhra Pradesh" />
+                <Picker.Item
+                  label="Arunachal Pradesh"
+                  value="Arunachal Pradesh"
+                />
+                <Picker.Item label="Assam" value="Assam" />
+                <Picker.Item label="Bihar" value="Bihar" />
+                <Picker.Item label="Chhattisgarh" value="Chhattisgarh" />
+                <Picker.Item label="Goa" value="Goa" />
+                <Picker.Item label="Gujarat" value="Gujarat" />
+                <Picker.Item label="Haryana" value="Haryana" />
+                <Picker.Item
+                  label="Himachal Pradesh"
+                  value="Himachal Pradesh"
+                />
+                <Picker.Item label="Jharkhand" value="Jharkhand" />
+                <Picker.Item label="Karnataka" value="Karnataka" />
+                <Picker.Item label="Kerala" value="Kerala" />
+                <Picker.Item label="Madhya Pradesh" value="Madhya Pradesh" />
+                <Picker.Item label="Maharashtra" value="Maharashtra" />
+                <Picker.Item label="Manipur" value="Manipur" />
+                <Picker.Item label="Meghalaya" value="Meghalaya" />
+                <Picker.Item label="Mizoram" value="Mizoram" />
+                <Picker.Item label="Nagaland" value="Nagaland" />
+                <Picker.Item label="Odisha" value="Odisha" />
+                <Picker.Item label="Punjab" value="Punjab" />
+                <Picker.Item label="Rajasthan" value="Rajasthan" />
+                <Picker.Item label="Sikkim" value="Sikkim" />
+                <Picker.Item label="Tamil Nadu" value="Tamil Nadu" />
+                <Picker.Item label="Telangana" value="Telangana" />
+                <Picker.Item label="Tripura" value="Tripura" />
+                <Picker.Item label="Uttar Pradesh" value="Uttar Pradesh" />
+                <Picker.Item label="Uttarakhand" value="Uttarakhand" />
+                <Picker.Item label="West Bengal" value="West Bengal" />
+              </Picker>
+            </View>
+            <TextInput
+              style={styles.input}
+              placeholder="City"
+              value={city}
+              onChangeText={setCity}
+            />
+
+            <TextInput
+              style={[styles.input, styles.textArea]}
+              placeholder="Address"
+              value={address}
+              onChangeText={setAddress}
+              multiline={true}
+              numberOfLines={4}
+            />
+
+            <View style={styles.inputContainer}>
+              <Picker
+                selectedValue={identityCard}
+                style={styles.picker}
+                onValueChange={(itemValue) => setIdentityCard(itemValue)}
+              >
+                <Picker.Item label="Aadhaar" value="adhaar" />
+                <Picker.Item label="Voter ID" value="voter_id" />
+                <Picker.Item label="PAN Card" value="pan_card" />
+              </Picker>
+            </View>
+            <TextInput
+              style={styles.input}
+              placeholder="ID Number"
+              value={idNumber}
+              onChangeText={setIdNumber}
+            />
+            <View style={styles.uploadContainer}>
+              <Button title="Upload ID Proof" onPress={handleIdProofUpload} />
+            </View>
+
+            {idProofImage && (
+              <Image source={{ uri: idProofImage }} style={styles.image} />
+            )}
+            <TextInput
+              style={styles.input}
+              placeholder="Charges per day"
+              value={charges}
+              onChangeText={setCharges}
+              keyboardType="numeric"
+            />
+            <View style={styles.uploadContainer}>
+              <Button
+                title="Upload Passport-size Photo"
+                onPress={handlePhotoUpload}
+              />
+            </View>
+            {photo && <Image source={{ uri: photo }} style={styles.image} />}
+            <View style={styles.submitContainer}>
+              <Button title="Submit" onPress={handleRegistration} />
+            </View>
+          </>
         )}
-
-        <TextInput
-          style={styles.input}
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          keyboardType="phone-pad"
-        />
-         <TextInput
-          style={styles.input}
-          placeholder="Pin
-          value={phoneNumber}
-          onChangeText={setPin}
-          keyboardType="phone-pad"
-        />
-         <TextInput
-          style={styles.input}
-          placeholder="confirm pin"
-          value={phoneNumber}
-          onChangeText={setConfirmPin}
-          keyboardType="phone-pad"
-        />
-
-
-        <TextInput
-          style={styles.input}
-          placeholder="Alternative Phone Number"
-          value={altPhoneNumber}
-          onChangeText={setAltPhoneNumber}
-          keyboardType="phone-pad"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-        <View style={styles.inputContainer}>
-          <Picker
-            selectedValue={country}
-            style={styles.picker}
-            onValueChange={(itemValue) => setCountry(itemValue)}
-          >
-            <Picker.Item label="India" value="India" />
-            <Picker.Item label="USA" value="USA" />
-            <Picker.Item label="Dubai" value="Dubai" />
-          </Picker>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Picker
-            selectedValue={state}
-            style={styles.picker} // Keeping the style consistent with other inputs
-            onValueChange={(itemValue) => setState(itemValue)}
-          >
-            <Picker.Item label="Select State" value="" />
-            <Picker.Item label="Andhra Pradesh" value="Andhra Pradesh" />
-            <Picker.Item label="Arunachal Pradesh" value="Arunachal Pradesh" />
-            <Picker.Item label="Assam" value="Assam" />
-            <Picker.Item label="Bihar" value="Bihar" />
-            <Picker.Item label="Chhattisgarh" value="Chhattisgarh" />
-            <Picker.Item label="Goa" value="Goa" />
-            <Picker.Item label="Gujarat" value="Gujarat" />
-            <Picker.Item label="Haryana" value="Haryana" />
-            <Picker.Item label="Himachal Pradesh" value="Himachal Pradesh" />
-            <Picker.Item label="Jharkhand" value="Jharkhand" />
-            <Picker.Item label="Karnataka" value="Karnataka" />
-            <Picker.Item label="Kerala" value="Kerala" />
-            <Picker.Item label="Madhya Pradesh" value="Madhya Pradesh" />
-            <Picker.Item label="Maharashtra" value="Maharashtra" />
-            <Picker.Item label="Manipur" value="Manipur" />
-            <Picker.Item label="Meghalaya" value="Meghalaya" />
-            <Picker.Item label="Mizoram" value="Mizoram" />
-            <Picker.Item label="Nagaland" value="Nagaland" />
-            <Picker.Item label="Odisha" value="Odisha" />
-            <Picker.Item label="Punjab" value="Punjab" />
-            <Picker.Item label="Rajasthan" value="Rajasthan" />
-            <Picker.Item label="Sikkim" value="Sikkim" />
-            <Picker.Item label="Tamil Nadu" value="Tamil Nadu" />
-            <Picker.Item label="Telangana" value="Telangana" />
-            <Picker.Item label="Tripura" value="Tripura" />
-            <Picker.Item label="Uttar Pradesh" value="Uttar Pradesh" />
-            <Picker.Item label="Uttarakhand" value="Uttarakhand" />
-            <Picker.Item label="West Bengal" value="West Bengal" />
-          </Picker>
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder="City"
-          value={city}
-          onChangeText={setCity}
-        />
-
-        <TextInput
-          style={[styles.input, styles.textArea]}
-          placeholder="Address"
-          value={address}
-          onChangeText={setAddress}
-          multiline={true}
-          numberOfLines={4}
-        />
-
-        <View style={styles.inputContainer}>
-          <Picker
-            selectedValue={identityCard}
-            style={styles.picker}
-            onValueChange={(itemValue) => setIdentityCard(itemValue)}
-          >
-            <Picker.Item label="Aadhaar" value="adhaar" />
-            <Picker.Item label="Voter ID" value="voter_id" />
-            <Picker.Item label="PAN Card" value="pan_card" />
-          </Picker>
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder="ID Number"
-          value={idNumber}
-          onChangeText={setIdNumber}
-        />
-        <View style={styles.uploadContainer}>
-          <Button title="Upload ID Proof" onPress={handleIdProofUpload} />
-        </View>
-
-        {idProofImage && (
-          <Image source={{ uri: idProofImage }} style={styles.image} />
-        )}
-        <TextInput
-          style={styles.input}
-          placeholder="Charges per day"
-          value={charges}
-          onChangeText={setCharges}
-          keyboardType="numeric"
-        />
-        <View style={styles.uploadContainer}>
-          <Button
-            title="Upload Passport-size Photo"
-            onPress={handlePhotoUpload}
-          />
-        </View>
-        {photo && <Image source={{ uri: photo }} style={styles.image} />}
-        <View style={styles.submitContainer}>
-          <Button title="Submit" onPress={handleRegistration} />
-        </View>
       </ScrollView>
       <Footer />
     </View>
@@ -427,7 +446,6 @@ const styles = StyleSheet.create({
     height: normalize(40),
     width: "100%",
     marginBottom: normalize(2),
-    
   },
   inputContainer: {
     width: windowWidth * 0.9,
@@ -436,7 +454,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "gray",
     padding: normalize(1),
-    alignItems: 'center',
+    alignItems: "center",
   },
   dateOfBirthContainer: {
     width: windowWidth * 0.9,
@@ -449,16 +467,14 @@ const styles = StyleSheet.create({
   textArea: {
     height: normalize(60),
   },
-  inputContainerplumber:{
+  inputContainerplumber: {
     width: windowWidth * 0.9,
     marginBottom: normalize(12),
     borderWidth: 1,
     borderRadius: 5,
     borderColor: "gray",
     padding: normalize(1),
-    
-
-  }
+  },
 });
 
 export default RegistrationScreen;
