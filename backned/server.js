@@ -115,6 +115,8 @@ app.post(
       name,
       dob,
       phoneNumber,
+      pin,
+      confirmPin,
       altPhoneNumber,
       email,
       country,
@@ -135,7 +137,7 @@ app.post(
 
     const query = `
     INSERT INTO registration (
-      name, dob, phoneNumber, altPhoneNumber, email,
+      name, dob, phoneNumber,pin,confirmPin,altPhoneNumber, email,
       country, state, city, address, identityCard,
       idNumber, idProofImage, charges, photo
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -145,6 +147,8 @@ app.post(
       name,
       dob,
       phoneNumber,
+      pin,
+      confirmPin,
       altPhoneNumber,
       email,
       country,
