@@ -33,7 +33,7 @@ const normalize = (size) => {
   }
 };
 
-const RegistrationScreen = ({ navigation }) => {
+const RegisterAsService = ({ navigation }) => {
   const [name, setName] = useState("");
   const [dob, setDob] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -152,6 +152,8 @@ const RegistrationScreen = ({ navigation }) => {
     formData.append("name", name);
     formData.append("dob", dob.toISOString().split("T")[0]); // Format date as YYYY-MM-DD
     formData.append("phoneNumber", phoneNumber);
+    formData.append("phoneNumber", pin);
+    formData.append("phoneNumber", confirmPin);
     formData.append("altPhoneNumber", altPhoneNumber);
     formData.append("email", email);
     formData.append("country", country);
@@ -477,4 +479,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegistrationScreen;
+export default RegisterAsService;

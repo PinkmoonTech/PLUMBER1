@@ -64,6 +64,8 @@ const LoginPage = ({ navigation }) => {
           <Text style={styles.forgotPassword}>Forgot password</Text>
         </TouchableOpacity>
 
+        
+      
         <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
           <Text style={styles.registerText}>
             Not a member? <Text style={styles.registerLink}>Register</Text>

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     paddingRight:2
   },
   iconButton: {
-    backgroundColor: "#007bff", // Example color
+    backgroundColor: "#007bff", 
     borderRadius: 5,
     padding: 10,
     paddingLeft:20,
