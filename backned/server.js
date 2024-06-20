@@ -54,68 +54,68 @@ app.post(
     { name: "photo", maxCount: 1 },
   ]),
   (req, res) => {
-    console.log(req.body)
-  //   const {
-  //     name,
-  //     dob,
-  //     phoneNumber,
-  //     pin,
-  //     confirmPin,
-  //     altPhoneNumber,
-  //     email,
-  //     country,
-  //     state,
-  //     city,
-  //     address,
-  //     identityCard,
-  //     idNumber,
-  //     charges,
-  //   } = req.body;
+    console.log("Received request body:", req.body)
+    const {
+      name,
+      dob,
+      phoneNumber,
+      pin,
+      confirmPin,
+      altPhoneNumber,
+      email,
+      country,
+      state,
+      city,
+      address,
+      identityCard,
+      idNumber,
+      charges,
+    } = req.body;
 
-  //   const idProofImage = req.files["idProofImage"]
-  //     ? `/uploads/${req.files["idProofImage"][0].filename}`
-  //     : null;
-  //   const photo = req.files["photo"]
-  //     ? `/uploads/${req.files["photo"][0].filename}`
-  //     : null;
+    const idProofImage = req.files["idProofImage"]
+      ? `/uploads/${req.files["idProofImage"][0].filename}`
+      : null;
+    const photo = req.files["photo"]
+      ? `/uploads/${req.files["photo"][0].filename}`
+      : null;
 
-  //   const query = `
-  //   INSERT INTO registerasservice(
-  //     name, dob, phoneNumber,pin,confirmPin, altPhoneNumber, email,
-  //     country, state, city, address, identityCard,
-  //     idNumber, idProofImage, charges, photo
-  //   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  // `;
+    const query = `
+    INSERT INTO registerasservice(
+      name, dob, phoneNumber,pin,confirmPin, altPhoneNumber, email,
+      country, state, city, address, identityCard,
+      idNumber, idProofImage, charges, photo
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
 
-  //   const values = [
-  //     name,
-  //     dob,
-  //     phoneNumber,
-  //     pin,
-  //     confirmPin,
-  //     altPhoneNumber,
-  //     email,
-  //     country,
-  //     state,
-  //     city,
-  //     address,
-  //     idProofImage,
-  //     idNumber,
-  //     identityCard,
-  //     charges,
-  //     photo,
-  //   ];
+    const values = [
+      name,
+      dob,
+      phoneNumber,
+      pin,
+      confirmPin,
+      altPhoneNumber,
+      email,
+      country,
+      state,
+      city,
+      address,
+      idProofImage,
+      idNumber,
+      identityCard,
+      charges,
+      photo,
+    ];
 
-  //   connection.query(query, values, (err, results) => {
-  //     if (err) {
-  //       console.error(err);
-  //       return res.status(500).json({ error: "Failed to registerasservice" });
-  //     }
-  //     res
-  //       .status(200)
-  //       .json({ message: "Registration successful", id: results.insertId });
-  //       console.log(err);
-  //   });
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Failed to registerasservice" });
+      }
+      res
+        .status(200)
+        .json({ message: "Registration successful", id: results.insertId });
+        console.log(err);
+    });
   }
 );
 
@@ -124,43 +124,45 @@ app.post(
 // API endpoint to handle registration POST request
 app.post("/registerascustomers",  (req, res) => {
   console.log("Received request body:", req.body);
-  // const {
-  //   name,
-  //   phoneNumber,
-  //   pin,
-  //   confirmPin,
-  //   altPhoneNumber,
-  //   address,
-  //   idNumber,
-  // } = req.body;
+  const {
+    name,
+    phoneNumber,
+    pin,
+    confirmPin,
+    altPhoneNumber,
+    address,
+    idNumber,
+  } = req.body;
+  console.log(req.body);
 
 
-  // const query = `
-  //   INSERT INTO registerascustomer (
-  //     name, phoneNumber, pin, confirmPin, altPhoneNumber, address, idNumber, createdAt
-  //   ) VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-  // `;
+  const query = `
+    INSERT INTO registerascustomer (
+      name, phoneNumber, pin, confirmPin, altPhoneNumber, address, idNumber, createdAt
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+  `;
 
-  // const values = [
-  //   name,
-  //   phoneNumber,
-  //   pin,
-  //   confirmPin,
-  //   altPhoneNumber,
-  //   address,
-  //   idNumber,
-  // ];
+  const values = [
+    name,
+    phoneNumber,
+    pin,
+    confirmPin,
+    altPhoneNumber,
+    address,
+    idNumber,
+  ];
 
-  // connection.query(query, values, (err, results) => {
-  //   if (err) {
-  //     console.error(err);
-  //     return res.status(500).json({ error: "Failed to registercustomer" });
-  //   }
-  //   res
-  //     .status(200)
-  //     .json({ message: "Registration successful", id: results.insertId });
-  // });
+  connection.query(query, values, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Failed to registercustomer" });
+    }
+    res
+      .status(200)
+      .json({ message: "Registration successful", id: results.insertId });
+  });
 });
+
 
 
 // API endpoint to fetch all registrations

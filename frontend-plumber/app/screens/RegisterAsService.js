@@ -52,7 +52,7 @@ const RegisterAsService = ({ navigation }) => {
   const [charges, setCharges] = useState("");
   const [photo, setPhoto] = useState(""); // Image URI
   const [error, setError] = useState(""); // To display errors
-  // const [registrationType, setRegistrationType] = useState("plumber"); 
+  const [registrationType, setRegistrationType] = useState("plumber"); 
   // const [showRegistrationDetails, setShowRegistrationDetails] = useState(false);
 
   // const toggleRegistrationDetails = () => {
@@ -150,7 +150,6 @@ const RegisterAsService = ({ navigation }) => {
       confirmPin,
       altPhoneNumber,
       email,
-      add,
       country,
       state,
       city,
@@ -218,22 +217,23 @@ const RegisterAsService = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.container}>
 
         {/* <ServiceCustomerCard onPress={toggleRegistrationDetails} /> */}
-
+        < View style={styles.inputContainerplumber}></View>
         {handleRegistration && (
           <>
             {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+            
 
         {/* Dropdown for selecting registration type */}
-        {/* <View style={styles.inputContainerplumber}> */}
-          {/* <Picker
+        
+          <Picker
                 selectedValue={registrationType}
                 style={styles.picker}
                 onValueChange={(itemValue) => setRegistrationType(itemValue)}
               >
                 <Picker.Item label="Plumber" value="plumber" />
                 <Picker.Item label="Electrician" value="electrician" />
-              </Picker> */}
-        {/* </View> */}
+              </Picker> 
+              
         <View style={styles.inputContainerplumber}>
         <TextInput
           style={styles.input}
