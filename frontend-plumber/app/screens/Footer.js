@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     // marginBottom:20
   },
   footerText: {
-    fontSize: 10,
+    fontSize: 15,
     color: 'white',
     marginBottom: 2,
     // paddingTop:10

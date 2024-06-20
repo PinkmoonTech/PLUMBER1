@@ -156,7 +156,7 @@ const PlumberViewScreen = ({ navigation }) => {
           style={styles.searchBoxContainer}
           onPress={() => this.textInput.focus()}
         >
-          <TextInput
+          {/* <TextInput
             ref={(input) => {
               this.textInput = input;
             }}
@@ -170,7 +170,7 @@ const PlumberViewScreen = ({ navigation }) => {
             size={24}
             color="black"
             style={styles.searchIcon}
-          />
+          /> */}
         </TouchableOpacity>
         {registrationData.length === 0 ? (
           <Text>Loading plumber details...</Text>

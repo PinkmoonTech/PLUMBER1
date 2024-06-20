@@ -7,6 +7,7 @@ import {
   Switch,
   StyleSheet,
   Dimensions,
+  Modal,
 } from "react-native";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -27,13 +28,22 @@ const normalize = (size) => {
   }
 };
 
-const LoginPage = () => {
+const Login= () => {
   const navigation = useNavigation();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
 
   const toggleSecureTextEntry = () => {
@@ -60,7 +70,7 @@ const LoginPage = () => {
     const requestBody = { phoneNumber, pin };
 
     try {
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch('http://192.168.0.108:3000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody),
@@ -131,9 +141,31 @@ const LoginPage = () => {
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity>
-          <Text style={styles.forgotPassword}>Forgot password</Text>
-        </TouchableOpacity>
+        <TouchableOpacity onPress={openModal}>
+        <Text style={styles.forgotPassword}>
+          For assistance with forgotten phone number or PIN, contact{' '}
+          <Text style={[styles.adminText, { textDecorationLine: 'underline' }]}>Admin</Text>.
+        </Text>
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={closeModal}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Admin Phone Number: 8989898987</Text>
+            <Text style={styles.modalText}>Admin Email: xxxx@gmail.com</Text>
+
+            <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
 
 
 
@@ -152,7 +184,7 @@ const LoginPage = () => {
         </TouchableOpacity>
       </View>
 
-      <Footer />
+
     </View>
   );
 };
@@ -221,15 +253,47 @@ const styles = StyleSheet.create({
     color: "#6A1B9A",
     marginBottom: 20,
     marginTop: 10,
-    textDecorationLine: "underline",
     alignSelf: 'flex-start', // Align text to the start of the container
-    marginLeft: 170, // Add margin to ensure it's not right at the edge
+    marginLeft: 0, // Add margin to ensure it's not right at the edge
+  },
+  adminText: {
+    color: "red",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: 1,
+    padding: 20,
+    alignItems: 'center',
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 10,
+    // textAlign: 'center',
+
+
+  },
+  closeButton: {
+    marginTop: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 20,
+    backgroundColor: '#007bff',
+    // borderRadius: 5,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    // textAlign: 'center',
   },
   registerText: {
     color: "#6A1B9A",
     marginBottom: 20,
     textAlign: "center", // Center text horizontally
-
     textDecorationLine: "underline",
   },
   registerLink: {
@@ -238,4 +302,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginPage;
+export default Login;

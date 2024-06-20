@@ -31,7 +31,7 @@ const Home = ({ navigation }) => {
         <View style={styles.buttonContainer}>
         <TouchableOpacity
       style={styles.iconButton}
-      onPress={() => navigation.navigate("LoginPage")}
+      onPress={() => navigation.navigate("Login")}
     >
       <MaterialIcons name="login" size={24} color="white" />
     </TouchableOpacity>
