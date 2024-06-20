@@ -150,6 +150,7 @@ const RegisterAsService = ({ navigation }) => {
       confirmPin,
       altPhoneNumber,
       email,
+      add,
       country,
       state,
       city,
