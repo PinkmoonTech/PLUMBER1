@@ -52,7 +52,7 @@ const RegisterAsService = ({ navigation }) => {
   const [charges, setCharges] = useState("");
   const [photo, setPhoto] = useState(""); // Image URI
   const [error, setError] = useState(""); // To display errors
-  const [registrationType, setRegistrationType] = useState("plumber"); 
+  const [registrationType, setRegistrationType] = useState(""); 
   // const [showRegistrationDetails, setShowRegistrationDetails] = useState(false);
 
   // const toggleRegistrationDetails = () => {
@@ -95,6 +95,7 @@ const RegisterAsService = ({ navigation }) => {
     });
     // console.log("Base64 data:", results.assets[0].uri);
     if (!results.cancelled && results.assets[0].uri) {
+      setIdProofImage(results.uri);
       // Check if URI is valid
       console.log("Base64 data:", results); // Add this line
       try {
@@ -217,14 +218,14 @@ const RegisterAsService = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.container}>
 
         {/* <ServiceCustomerCard onPress={toggleRegistrationDetails} /> */}
-        < View style={styles.inputContainerplumber}></View>
+       
         {handleRegistration && (
           <>
             {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
             
 
         {/* Dropdown for selecting registration type */}
-        
+        < View style={styles.inputContainerplumber}>
           <Picker
                 selectedValue={registrationType}
                 style={styles.picker}
@@ -233,15 +234,16 @@ const RegisterAsService = ({ navigation }) => {
                 <Picker.Item label="Plumber" value="plumber" />
                 <Picker.Item label="Electrician" value="electrician" />
               </Picker> 
+              </View>
               
-        <View style={styles.inputContainerplumber}>
+       
         <TextInput
           style={styles.input}
           placeholder="Name"
           value={name}
           onChangeText={setName}
         />
-        </View>
+        
 
         <TouchableOpacity // Use TouchableOpacity for date selection
           style={styles.dateOfBirthContainer}

@@ -47,7 +47,7 @@ const PlumberViewScreen = ({ navigation }) => {
   const fetchRegistrationData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.115:3000/registrations"
+        "http://192.168.0.108:3000/registerascustomers"
       );
       console.log(response.data); // Debug: Log fetched data
       setRegistrationData(response.data); // Set registration data in state
@@ -74,17 +74,17 @@ const PlumberViewScreen = ({ navigation }) => {
     let filteredData = registrationData.filter(
       (registration) =>
         isPlumberSearch ||
-        registration.name.toLowerCase().includes(lowerCaseQuery) ||
-        registration.city.toLowerCase().includes(lowerCaseQuery) ||
-        registration.charges.toString().toLowerCase().includes(lowerCaseQuery)
+        registration.name.toLowerCase().includes(lowerCaseQuery) 
+        // registration.city.toLowerCase().includes(lowerCaseQuery) ||
+        // registration.charges.toString().toLowerCase().includes(lowerCaseQuery)
     );
 
     // Sort filtered data based on sort option
-    if (sortOption === "charge") {
-      filteredData.sort((a, b) => a.charges - b.charges);
-    } else if (sortOption === "location") {
-      filteredData.sort((a, b) => a.city.localeCompare(b.city));
-    }
+    // if (sortOption === "charge") {
+    //   filteredData.sort((a, b) => a.charges - b.charges);
+    // } else if (sortOption === "location") {
+    //   filteredData.sort((a, b) => a.city.localeCompare(b.city));
+    // }
 
 
 
@@ -104,14 +104,14 @@ const PlumberViewScreen = ({ navigation }) => {
       <MaterialIcons name="phone" size={15} color="black" style={styles.icon} />
       <Text style={styles.cardText}>{registration.phoneNumber}</Text>
     </View>
-    <View style={styles.iconContainer}>
+    {/* <View style={styles.iconContainer}>
       <MaterialCommunityIcons name="cash" size={15} color="black" style={styles.icon} />
       <Text style={styles.cardText}>{registration.charges}</Text>
     </View>
     <View style={styles.iconContainer}>
       <MaterialCommunityIcons name="map-marker" size={15} color="black" style={styles.icon} />
       <Text style={styles.cardText}>{registration.city}</Text>
-    </View>
+    </View> */}
 
 
         <View style={styles.buttonContainer}>

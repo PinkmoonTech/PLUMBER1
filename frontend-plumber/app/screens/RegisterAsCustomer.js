@@ -11,6 +11,7 @@ import {
   Dimensions,
   PixelRatio,
   Platform,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
@@ -18,7 +19,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import * as FileSystem from "expo-file-system";
 import Footer from "./Footer";
 import Header from "./Header";
-import ServiceCustomerCard from "./ServiceCustomerCard";
+import ServiceCustomerCard from "./CustomerCards";
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
@@ -66,6 +67,15 @@ const RegisterAsCustomer = ({ navigation }) => {
       setError('PIN and Confirm PIN must match.');
       return;
     }
+    if (phoneNumber.length !== 10) {
+      setError("Phone number must be 10 digits long");
+      return;
+    }
+    if (pin.length !== 6 || confirmPin.length !== 6) {
+      setError("PIN must be 6 digits long");
+      return;
+    }
+   
 
     const requestBody = {
       name,
@@ -88,7 +98,7 @@ const RegisterAsCustomer = ({ navigation }) => {
 
       const result = await response.json();
       if (response.ok) {
-        alert('Registration successful');
+        alert('customer Registration successful');
       } else {
         setError(result.error || 'Customer registration failed');
       }

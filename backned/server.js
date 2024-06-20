@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -43,18 +43,78 @@ connection.connect((err) => {
   console.log("Connected to MySQL database");
 });
 
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 1024 * 1024 }, // Example limit (1MB)
+  fileFilter: (req, file, cb) => {
+    // Example file filter if needed
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+      cb(null, true);
+    } else {
+      cb(new Error('File type not supported'), false);
+    }
+  }
+});
+
+
+
+// Registration endpoint for customers
+app.post("/registerascustomers", (req, res) => {
+  const { name, phoneNumber, pin, confirmPin, altPhoneNumber, address, idNumber } = req.body;
+  const query = `
+    INSERT INTO registerascustomer (name, phoneNumber, pin, confirmPin, altPhoneNumber, address, idNumber, createdAt)
+    VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+  `;
+  const values = [name, phoneNumber, pin, confirmPin, altPhoneNumber, address, idNumber];
+
+  connection.query(query, values, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Failed to register customer" });
+    }
+    res.status(200).json({ message: "Registration successful", id: results.insertId });
+  });
+});
+
+// Login endpoint
+app.post("/login", (req, res) => {
+  const { phoneNumber, pin } = req.body;
+  const customerQuery = `SELECT * FROM registerascustomer WHERE phoneNumber = ? AND pin = ?`;
+  const serviceQuery = `SELECT * FROM registerasservice WHERE phoneNumber = ? AND pin = ?`;
+
+  connection.query(customerQuery, [phoneNumber, pin], (err, customerResults) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Login failed" });
+    }
+    if (customerResults.length > 0) {
+      return res.status(200).json({ role: "customer", message: "Login successful" });
+    }
+
+    connection.query(serviceQuery, [phoneNumber, pin], (err, serviceResults) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Login failed" });
+      }
+      if (serviceResults.length > 0) {
+        return res.status(200).json({ role: "service", message: "Login successful" });
+      }
+
+      res.status(401).json({ error: "Invalid phone number or pin" });
+    });
+  });
+});
+
+
 
 
 
 
 app.post(
   "/register",
-  upload.fields([
-    { name: "idProofImage", maxCount: 1 },
-    { name: "photo", maxCount: 1 },
-  ]),
   (req, res) => {
     console.log("Received request body:", req.body)
+    console.log("Received files:", req.files);
     const {
       name,
       dob,
@@ -72,13 +132,12 @@ app.post(
       charges,
     } = req.body;
 
-    const idProofImage = req.files["idProofImage"]
-      ? `/uploads/${req.files["idProofImage"][0].filename}`
-      : null;
-    const photo = req.files["photo"]
-      ? `/uploads/${req.files["photo"][0].filename}`
-      : null;
-
+    // const idProofImage = req.files["idProofImage"]
+    //   ? `/uploads/${req.files["idProofImage"][0].filename}`
+    //   : null;
+    // const photo = req.files["photo"]
+    //   ? `/uploads/${req.files["photo"][0].filename}`
+    //   : null;
     const query = `
     INSERT INTO registerasservice(
       name, dob, phoneNumber,pin,confirmPin, altPhoneNumber, email,
@@ -108,9 +167,10 @@ app.post(
 
     connection.query(query, values, (err, results) => {
       if (err) {
-        console.error(err);
+        console.error("Error executing query:", err);
         return res.status(500).json({ error: "Failed to registerasservice" });
       }
+      console.log("Registration successful. Insert ID:", results.insertId);
       res
         .status(200)
         .json({ message: "Registration successful", id: results.insertId });
@@ -166,20 +226,20 @@ app.post("/registerascustomers",  (req, res) => {
 
 
 // API endpoint to fetch all registrations
-// app.get("/registrations", (req, res) => {
+app.get("/registerascustomers", (req, res) => {
 
-//   const query = `SELECT * FROM registration`;
+  const query = `SELECT * FROM registerascustomer`;
   
-//   connection.query(query, (err, results) => {
-//     if (err) {
-//       console.log("error", err);
-//       console.error("Error executing MySQL query:", err);
-//       return res.status(500).json({ error: "Failed to fetch registrations" });
-//     }
-//     console.log(results);
-//     res.status(200).json(results);
-//   });
-// });
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.log("error", err);
+      console.error("Error executing MySQL query:", err);
+      return res.status(500).json({ error: "Failed to fetch registrations" });
+    }
+    console.log(results);
+    res.status(200).json(results);
+  });
+});
 
 // Start the server
 app.listen(PORT, () => {

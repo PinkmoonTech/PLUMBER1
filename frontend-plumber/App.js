@@ -11,6 +11,7 @@ import Home from "./app/screens/Home";
 import LoginPage from "./app/screens/loginpage";
 
 import RegisterAsCustomer from "./app/screens/RegisterAsCustomer";
+import CustomerCards from "./app/screens/CustomerCards";
 
 // import Header from "./Header";
 
@@ -26,14 +27,11 @@ const App = () => {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={Login} />
-          
-            
-          
            <Stack.Screen name="LoginPage" component={LoginPage} />
           <Stack.Screen name="RegisterAsService" component={RegisterAsService} />
           <Stack.Screen name="RegisterAsCustomer"component={RegisterAsCustomer}
           />
-
+          <Stack.Screen name="CustomerCards" component={CustomerCards} />
           <Stack.Screen name="Service i" component={PlumberViewScreen} />
           {/* <Stack.Screen name="LoginPage" component={LoginPage} /> */}
 

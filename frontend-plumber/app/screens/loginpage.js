@@ -6,28 +6,88 @@ import {
   TouchableOpacity,
   Switch,
   StyleSheet,
+  Dimensions,
 } from "react-native";
+
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Ionicons } from "@expo/vector-icons";
-
+import { useNavigation } from '@react-navigation/native';
 import Footer from "./Footer";
 import Header from "./Header";
 
-const LoginPage = ({ navigation }) => {
+const { width: windowWidth } = Dimensions.get("window");
+
+const scale = (size) => (windowWidth / 320) * size;
+const normalize = (size) => {
+  const newSize = scale(size);
+  if (Platform.OS === "ios") {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize));
+  } else {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+  }
+};
+
+const LoginPage = () => {
+  const navigation = useNavigation();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState("");
 
-  
 
   const toggleSecureTextEntry = () => {
     setSecureTextEntry(!secureTextEntry);
   };
 
+
+  const handleLogin = async () => {
+    setError('');
+
+    if (!phoneNumber || !pin) {
+      setError('Please enter both phone number and pin');
+      return;
+    }
+    if (phoneNumber.length !== 10) {
+      setError("Phone number must be 10 digits long");
+      return;
+    }
+    if (pin.length !== 6) {
+      setError("PIN must be 6 digits long");
+      return;
+    }
+
+    const requestBody = { phoneNumber, pin };
+
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        if (result.role === "customer") {
+          navigation.navigate('CustomerCards');
+        } else if (result.role === "service") {
+          navigation.navigate('Home');
+        }
+      } else {
+        setError(result.error || 'Login failed');
+      }
+    } catch (err) {
+      console.error('Error occurred:', err);
+      setError('An error occurred. Please try again later.');
+    }
+  };
+
+
   return (
-   
+
     <View style={styles.container}>
       {/* <Text> <Icon name="home" size={50} /> </Text> */}
+      {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
 
       <Text style={styles.title}>Log in to your account</Text>
       <View style={styles.inputContainer}>
@@ -38,12 +98,21 @@ const LoginPage = ({ navigation }) => {
           onChangeText={setPhoneNumber}
         />
         <View style={styles.passwordContainer}>
-          <TextInput
+          {/* <TextInput
             style={styles.input}
             placeholder="Pin"
             maxLength={6}
             value={password}
             onChangeText={setPassword}
+            secureTextEntry={secureTextEntry}
+          /> */}
+
+          <TextInput
+            style={styles.input}
+            placeholder="Pin"
+            value={pin}
+            onChangeText={setPin}
+            keyboardType="numeric"
             secureTextEntry={secureTextEntry}
           />
           <TouchableOpacity
@@ -58,7 +127,7 @@ const LoginPage = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
@@ -66,24 +135,24 @@ const LoginPage = ({ navigation }) => {
           <Text style={styles.forgotPassword}>Forgot password</Text>
         </TouchableOpacity>
 
-        
-      
-        {/* Navigate to RegisterAsCustomer screen */}
-      <TouchableOpacity onPress={() => navigation.navigate("RegisterAsCustomer")}>
-        <Text style={styles.registerText}>
-          Register as Customer
-        </Text>
-      </TouchableOpacity>
 
-      {/* Navigate to RegisterAsService screen */}
-      <TouchableOpacity onPress={() => navigation.navigate("RegisterAsService")}>
-        <Text style={styles.registerText}>
-          Register as Service Provider
-        </Text>
-      </TouchableOpacity>
+
+        {/* Navigate to RegisterAsCustomer screen */}
+        <TouchableOpacity onPress={() => navigation.navigate("RegisterAsCustomer")}>
+          <Text style={styles.registerText}>
+            Register as Customer
+          </Text>
+        </TouchableOpacity>
+
+        {/* Navigate to RegisterAsService screen */}
+        <TouchableOpacity onPress={() => navigation.navigate("RegisterAsService")}>
+          <Text style={styles.registerText}>
+            Register as Service Provider
+          </Text>
+        </TouchableOpacity>
       </View>
-   
-    <Footer/>
+
+      <Footer />
     </View>
   );
 };
@@ -151,7 +220,7 @@ const styles = StyleSheet.create({
   forgotPassword: {
     color: "#6A1B9A",
     marginBottom: 20,
-    marginTop:10,
+    marginTop: 10,
     textDecorationLine: "underline",
     alignSelf: 'flex-start', // Align text to the start of the container
     marginLeft: 170, // Add margin to ensure it's not right at the edge
@@ -160,7 +229,7 @@ const styles = StyleSheet.create({
     color: "#6A1B9A",
     marginBottom: 20,
     textAlign: "center", // Center text horizontally
-  
+
     textDecorationLine: "underline",
   },
   registerLink: {
