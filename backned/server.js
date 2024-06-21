@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -42,20 +42,6 @@ connection.connect((err) => {
   }
   console.log("Connected to MySQL database");
 });
-
-const upload = multer({ 
-  storage: storage,
-  limits: { fileSize: 1024 * 1024 }, // Example limit (1MB)
-  fileFilter: (req, file, cb) => {
-    // Example file filter if needed
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      cb(null, true);
-    } else {
-      cb(new Error('File type not supported'), false);
-    }
-  }
-});
-
 
 
 // Registration endpoint for customers
@@ -105,7 +91,18 @@ app.post("/login", (req, res) => {
   });
 });
 
-
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // Example limit (1MB)
+  fileFilter: (req,files,cb) => {
+    // Example file filter if needed
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+      cb(null, true);
+    } else {
+      cb(new Error('File type not supported'), false);
+    }
+  }
+});
 
 
 
@@ -114,8 +111,13 @@ app.post(
   "/register",
   (req, res) => {
     console.log("Received request body:", req.body)
-    console.log("Received files:", req.files);
+    // console.log("Received files:", req.files);
+
+    if (!req.file) {
+      return res.status(400).send('No file uploaded.');
+    }
     const {
+      registrationType,
       name,
       dob,
       phoneNumber,
@@ -130,23 +132,39 @@ app.post(
       identityCard,
       idNumber,
       charges,
+      
     } = req.body;
+    
 
-    // const idProofImage = req.files["idProofImage"]
-    //   ? `/uploads/${req.files["idProofImage"][0].filename}`
-    //   : null;
-    // const photo = req.files["photo"]
-    //   ? `/uploads/${req.files["photo"][0].filename}`
-    //   : null;
+
+
+
+    // Log the received fields and file information
+  // console.log({
+  //   name, dob, phoneNumber, pin, confirmPin, altPhoneNumber, email,
+  //   country, state, city, address, identityCard, idNumber, charges,
+  //   idProofImage: req.file.path
+  // });
+
+  // res.send('File uploaded and data received.');
+
+    const idProofImage = req.body["idProofImage"]
+      ? `/uploads/${req.files["idProofImage"][0].filename}`
+      : null;
+    const photo = req.body["photo"]
+      ? `/uploads/${req.files["photo"][0].filename}`
+      : null;
+
     const query = `
     INSERT INTO registerasservice(
-      name, dob, phoneNumber,pin,confirmPin, altPhoneNumber, email,
+      registrationType,name, dob, phoneNumber,pin,confirmPin, altPhoneNumber, email,
       country, state, city, address, identityCard,
       idNumber, idProofImage, charges, photo
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
     const values = [
+      registrationType,
       name,
       dob,
       phoneNumber,
@@ -183,7 +201,7 @@ app.post(
 
 // API endpoint to handle registration POST request
 app.post("/registerascustomers",  (req, res) => {
-  console.log("Received request body:", req.body);
+  
   const {
     name,
     phoneNumber,
@@ -193,7 +211,7 @@ app.post("/registerascustomers",  (req, res) => {
     address,
     idNumber,
   } = req.body;
-  console.log(req.body);
+  
 
 
   const query = `

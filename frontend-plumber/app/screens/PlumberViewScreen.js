@@ -47,7 +47,7 @@ const PlumberViewScreen = ({ navigation }) => {
   const fetchRegistrationData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.108:3000/registerascustomers"
+        "http://192.168.0.112:3000/registerascustomers"
       );
       console.log(response.data); // Debug: Log fetched data
       setRegistrationData(response.data); // Set registration data in state

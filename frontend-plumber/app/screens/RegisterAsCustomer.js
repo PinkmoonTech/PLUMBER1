@@ -88,7 +88,7 @@ const RegisterAsCustomer = ({ navigation }) => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/registerascustomers', {
+      const response = await fetch('http://192.168.0.112:3000/registerascustomers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -189,8 +189,7 @@ const RegisterAsCustomer = ({ navigation }) => {
             </View>
             </>
         )}
-          
-          
+            
         
       </ScrollView>
       <Footer />
