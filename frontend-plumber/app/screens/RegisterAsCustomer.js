@@ -122,6 +122,7 @@ const RegisterAsCustomer = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
+      <Header/>
     <ScrollView contentContainerStyle={styles.container}>
       {/* Conditionally render error message */}
       {handleRegistrations && (

@@ -96,6 +96,7 @@ const Login= () => {
   return (
 
     <View style={styles.container}>
+      
       {/* <Text> <Icon name="home" size={50} /> </Text> */}
       {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
 
@@ -183,8 +184,6 @@ const Login= () => {
           </Text>
         </TouchableOpacity>
       </View>
-
-
     </View>
   );
 };
@@ -196,7 +195,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    flex: 1,
+    // justifyContent: 'space-between', 
+     
   },
   logo: {
     width: 100,

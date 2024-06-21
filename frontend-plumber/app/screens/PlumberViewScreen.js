@@ -152,11 +152,11 @@ const PlumberViewScreen = ({ navigation }) => {
       
       <ScrollView contentContainerStyle={styles.container}>
         {/* <Text style={styles.header}></Text> */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.searchBoxContainer}
           onPress={() => this.textInput.focus()}
         >
-          {/* <TextInput
+          <TextInput
             ref={(input) => {
               this.textInput = input;
             }}
@@ -170,8 +170,8 @@ const PlumberViewScreen = ({ navigation }) => {
             size={24}
             color="black"
             style={styles.searchIcon}
-          /> */}
-        </TouchableOpacity>
+          />
+        </TouchableOpacity> */}
         {registrationData.length === 0 ? (
           <Text>Loading plumber details...</Text>
         ) : (

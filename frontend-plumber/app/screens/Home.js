@@ -92,28 +92,30 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "300%",
-    paddingHorizontal: 80,
-    paddingVertical:1,
-    marginLeft:250,
-    marginTop:0,
-    marginBottom:"10"
+    // paddingHorizontal: 80,
+    // paddingVertical:1,
+    marginLeft:270,
+    // marginTop:0,
+    // marginBottom:"10"
+    marginBottom:30
   },
  
   middleImage: {
     width: "50%", // Adjusted width to center horizontally
-    aspectRatio: 10 / 4, //height will be "30%" // Adjusted height to center vertically
-   alignItems:"center",
+    aspectRatio: 10 / 5, //height will be "30%" // Adjusted height to center vertically
+  //  alignItems:"center",
   
   },
   overlayText: {
     color: "#800080",
-    fontSize: 15,
+    fontSize: 17,
     // textAlign: "center",
     // paddingHorizontal: 20,
     // marginBottom:60,
     // paddingBottom:50
     paddingTop:0,
     paddingRight:290,
+    paddingLeft:10
    
   },
   italic: {

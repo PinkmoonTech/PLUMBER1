@@ -102,6 +102,7 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
+      <Header/>
       <Text style={styles.title}>{isLogin ? "Login " : "Signup "}</Text>
       <View style={styles.formContainer}>
         <View style={styles.slideControls}>
@@ -201,7 +202,6 @@ const Login = () => {
           </View>
         </View>
       </View>
-      <Footer />
     </View>
   );
 };
