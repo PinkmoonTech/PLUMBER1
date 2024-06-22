@@ -110,7 +110,7 @@ const upload = multer({
 app.post(
   "/register",
   (req, res) => {
-    console.log("Received request body:", req.body)
+    // console.log("Received request body:", req.body)
     // console.log("Received files:", req.files);
 
     if (!req.file) {
@@ -148,12 +148,12 @@ app.post(
 
   // res.send('File uploaded and data received.');
 
-    const idProofImage = req.body["idProofImage"]
-      ? `/uploads/${req.files["idProofImage"][0].filename}`
-      : null;
-    const photo = req.body["photo"]
-      ? `/uploads/${req.files["photo"][0].filename}`
-      : null;
+    // const idProofImage = req.body["idProofImage"]
+    //   ? `/uploads/${req.files["idProofImage"][0].filename}`
+    //   : null;
+    // const photo = req.body["photo"]
+    //   ? `/uploads/${req.files["photo"][0].filename}`
+    //   : null;
 
     const query = `
     INSERT INTO registerasservice(

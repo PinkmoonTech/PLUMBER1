@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   Platform,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import Footer from "./Footer";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -28,6 +28,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.serviceText}>
           Service <Text style={styles.italic}>i</Text>
         </Text>
+
         <View style={styles.buttonContainer}>
         <TouchableOpacity
       style={styles.iconButton}
@@ -45,6 +46,16 @@ const Home = ({ navigation }) => {
           }}
           style={styles.middleImage}
         >
+
+{/* <View style={styles.middleContent}>
+        <ImageBackground
+          source={{
+            uri: "https://i.ibb.co/3cFNMJJ/image.jpg",
+          }}
+          style={styles.middleImage}
+        > */}
+
+          
           <Text style={styles.overlayText}>A Platform for Customer to enable right service</Text>
         </ImageBackground>
       </View>
@@ -60,6 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     // paddingTop:Platform.OS ==="android"? StatusBar.currentHeight:0
+    
   },
   header: {
     width: "100%",
@@ -74,9 +86,10 @@ const styles = StyleSheet.create({
     width: 80, // Increased width
     height: 40, // Increased height
     // marginRight: 'auto',
-    paddingHorizontal: 15,
-    marginLeft:0,
-    paddingRight:2
+    paddingHorizontal: 1,
+    marginLeft:-18,
+    // paddingRight:2
+    marginTop:1
   },
   iconButton: {
     backgroundColor: "#007bff", 
@@ -97,25 +110,26 @@ const styles = StyleSheet.create({
     marginLeft:270,
     // marginTop:0,
     // marginBottom:"10"
-    marginBottom:30
+    marginBottom:15
   },
  
   middleImage: {
-    width: "50%", // Adjusted width to center horizontally
-    aspectRatio: 10 / 5, //height will be "30%" // Adjusted height to center vertically
+    width: "55%", // Adjusted width to center horizontally
+    aspectRatio: 10 / 6, //height will be "30%" // Adjusted height to center vertically
   //  alignItems:"center",
   
   },
   overlayText: {
     color: "#800080",
-    fontSize: 17,
+    fontSize: 22,
     // textAlign: "center",
     // paddingHorizontal: 20,
     // marginBottom:60,
     // paddingBottom:50
-    paddingTop:0,
+    paddingTop:10,
     paddingRight:290,
-    paddingLeft:10
+    paddingLeft:15,
+    fontWeight:"bold"
    
   },
   italic: {

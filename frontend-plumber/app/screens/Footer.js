@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   footer: {
     width: windowWidth, // Adjust to full screen width
     backgroundColor: '#b0c4de',
-    padding: 20,
+    padding: 15,
     alignItems: 'center',
   },
   footerText: {

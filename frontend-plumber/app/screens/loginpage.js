@@ -8,6 +8,8 @@ import {
   StyleSheet,
   Dimensions,
   Modal,
+  Image,
+  Platform,
 } from "react-native";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -28,7 +30,7 @@ const normalize = (size) => {
   }
 };
 
-const Login= () => {
+const Login = () => {
   const navigation = useNavigation();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -91,17 +93,42 @@ const Login= () => {
       setError('An error occurred. Please try again later.');
     }
   };
+  const handleWelcomeScreen = () => {
+    // Implement navigation logic to go back to the home page
+    // Example: navigation.navigate('Home');
+    navigation.navigate('Home');
+  };
 
 
   return (
 
     <View style={styles.container}>
-      
+
       {/* <Text> <Icon name="home" size={50} /> </Text> */}
       {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
 
+      {/* <Image
+          resizeMode="contain"
+          source={{
+            uri: "https://i.ibb.co/qRH9ZjT/back-Button-Left.png",
+          }}
+          style={styles.logos} // Use the logo style from styles
+        /> */}
+
+      <TouchableOpacity style={styles.backButton} onPress={handleWelcomeScreen}>
+        <Image
+          resizeMode="contain"
+          source={{
+            uri: 'https://i.ibb.co/qRH9ZjT/back-Button-Left.png',
+          }}
+          style={styles.logos}
+        />
+      </TouchableOpacity>
+
       <Text style={styles.title}>Log in to your account</Text>
+
       <View style={styles.inputContainer}>
+
         <TextInput
           style={styles.input}
           placeholder="phone number"
@@ -143,29 +170,29 @@ const Login= () => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={openModal}>
-        <Text style={styles.forgotPassword}>
-          For assistance with forgotten phone number or PIN, contact{' '}
-          <Text style={[styles.adminText, { textDecorationLine: 'underline' }]}>Admin</Text>.
-        </Text>
-      </TouchableOpacity>
+          <Text style={styles.forgotPassword}>
+            For assistance with forgotten phone number or PIN, contact{' '}
+            <Text style={[styles.adminText, { textDecorationLine: 'underline' }]}>Admin</Text>.
+          </Text>
+        </TouchableOpacity>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Admin Phone Number: 8989898987</Text>
-            <Text style={styles.modalText}>Admin Email: xxxx@gmail.com</Text>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={closeModal}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Admin Phone Number: 8989898987</Text>
+              <Text style={styles.modalText}>Admin Email: xxxx@gmail.com</Text>
 
-            <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
 
 
@@ -191,12 +218,12 @@ const Login= () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#8fbc8f",
+    backgroundColor: "#b0c4de",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
     // justifyContent: 'space-between', 
-     
+
   },
   logo: {
     width: 100,
@@ -204,9 +231,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     color: "#fff",
-    marginBottom: 20,
+    marginBottom: 15,
   },
   inputContainer: {
     width: "100%",
@@ -300,6 +327,20 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     color: "red",
   },
+  logos: {
+    width: 150,
+    height: 80,
+    marginTop:-150
+    
+
+  },
+
+  backButton:{
+    width: 30,
+    height: 30,
+    marginRight: 390,
+    
+  }
 });
 
 export default Login;
