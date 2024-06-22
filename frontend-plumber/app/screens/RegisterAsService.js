@@ -551,6 +551,7 @@ const styles = StyleSheet.create({
   submitContainer: {
     marginBottom: normalize(5),
     width: windowWidth * 0.9,
+    
   },
   picker: {
     height: normalize(40),
