@@ -135,14 +135,33 @@
 
 
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet,Dimensions,Platform,PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Footer from "./Footer";
+import Header from "./Header";
+
+const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
+
+const scale = (size) => (windowWidth / 320) * size;
+const normalize = (size) => {
+  const newSize = scale(size);
+  if (Platform.OS === "ios") {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize));
+  } else {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+  }
+};
+
 
 const CustomerCards = () => {
   const navigation = useNavigation();
 
   return (
+    <View style={{ flex: 1 }}> 
+    <Header/>
     <View style={styles.container}>
+    
+
       {/* Plumber Card */}
       <TouchableOpacity
         style={styles.card}
@@ -158,6 +177,8 @@ const CustomerCards = () => {
       >
         <Text style={styles.cardText}>Electrician</Text>
       </TouchableOpacity>
+      </View>
+      <Footer/>
     </View>
   );
 };
@@ -168,6 +189,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
+    // marginBottom: 474, 
+    padding: normalize(20),
   },
   card: {
     width: 100,
@@ -183,6 +206,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  
 });
 
 export default CustomerCards;

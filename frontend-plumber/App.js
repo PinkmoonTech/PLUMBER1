@@ -116,7 +116,7 @@ const App = () => {
           <Stack.Screen name="RegisterAsService" component={RegisterAsService}  options={{ headerShown: true }}/>
           <Stack.Screen name="RegisterAsCustomer" component={RegisterAsCustomer} options={{ headerShown: true }} />
           <Stack.Screen name="CustomerCards" component={CustomerCards}  options={{ headerShown: true }}/>
-          <Stack.Screen name="PlumberViewScreen" component={PlumberViewScreen}  options={{ headerShown: true}}/>
+          <Stack.Screen name="Service i" component={PlumberViewScreen}  options={{ headerShown: true}}/>
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

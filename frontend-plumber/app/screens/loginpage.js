@@ -10,6 +10,7 @@ import {
   Modal,
   Image,
   Platform,
+  StatusBar
 } from "react-native";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -93,17 +94,12 @@ const Login = () => {
       setError('An error occurred. Please try again later.');
     }
   };
-  const handleWelcomeScreen = () => {
-    // Implement navigation logic to go back to the home page
-    // Example: navigation.navigate('Home');
-    navigation.navigate('Home');
-  };
-
-
+  
   return (
 
     <View style={styles.container}>
 
+ <StatusBar barStyle="dark-content" />
       {/* <Text> <Icon name="home" size={50} /> </Text> */}
       {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
 
@@ -114,16 +110,15 @@ const Login = () => {
           }}
           style={styles.logos} // Use the logo style from styles
         /> */}
-
-      <TouchableOpacity style={styles.backButton} onPress={handleWelcomeScreen}>
-        <Image
-          resizeMode="contain"
-          source={{
-            uri: 'https://i.ibb.co/qRH9ZjT/back-Button-Left.png',
-          }}
-          style={styles.logos}
-        />
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.icon}>
+        <Icon name="arrow-back" size={30} color="white" />
       </TouchableOpacity>
+
+{/*       
+<TouchableOpacity onPress={handleWelcomeScreen}>
+        <Icon name="arrow-back" size={30} color="black" style={styles.icon} />
+      </TouchableOpacity> */}
+
 
       <Text style={styles.title}>Log in to your account</Text>
 
@@ -223,7 +218,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     // justifyContent: 'space-between', 
+    
 
+  },
+  icon: {
+    position: "absolute",
+    top: StatusBar.currentHeight || 30,  // Use StatusBar height if available
+    left: 10, // Adjust the left position as needed
   },
   logo: {
     width: 100,
@@ -327,20 +328,11 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     color: "red",
   },
-  logos: {
-    width: 150,
-    height: 80,
-    marginTop:-150
+  
+
     
 
-  },
-
-  backButton:{
-    width: 30,
-    height: 30,
-    marginRight: 390,
-    
-  }
+  
 });
 
 export default Login;

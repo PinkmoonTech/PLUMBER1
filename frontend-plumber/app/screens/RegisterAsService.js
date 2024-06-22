@@ -312,7 +312,8 @@ const RegisterAsService = ({ navigation }) => {
 
 
   return (
-    <View style={{ flex: 1 }}>
+   <View style={{ flex: 1 }}> 
+      
       <Header />
       <ScrollView contentContainerStyle={styles.container}>
 
