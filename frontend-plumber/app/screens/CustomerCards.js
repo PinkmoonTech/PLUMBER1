@@ -135,17 +135,18 @@
 
 
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet,Dimensions,Platform,PixelRatio } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet,Dimensions,Platform,PixelRatio} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Footer from "./Footer";
 import Header from "./Header";
+import { ScrollView } from 'react-native-gesture-handler';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
 const scale = (size) => (windowWidth / 320) * size;
 const normalize = (size) => {
   const newSize = scale(size);
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "android") {
     return Math.round(PixelRatio.roundToNearestPixel(newSize));
   } else {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
@@ -159,9 +160,7 @@ const CustomerCards = () => {
   return (
     <View style={{ flex: 1 }}> 
     <Header/>
-    <View style={styles.container}>
-    
-
+    <ScrollView contentContainerStyle={styles.container}>
       {/* Plumber Card */}
       <TouchableOpacity
         style={styles.card}
@@ -177,7 +176,7 @@ const CustomerCards = () => {
       >
         <Text style={styles.cardText}>Electrician</Text>
       </TouchableOpacity>
-      </View>
+      </ScrollView>
       <Footer/>
     </View>
   );
@@ -188,22 +187,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: normalize (20),
     // marginBottom: 474, 
-    padding: normalize(20),
+    // padding: normalize(120),
   },
   card: {
-    width: 100,
-    height: 100,
+    width: normalize(100),
+    height: normalize(100),
     backgroundColor: '#007bff',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
-    marginHorizontal: 10,
+    borderRadius: normalize(10),
+    marginHorizontal: normalize(10),
   },
   cardText: {
     color: 'white',
-    fontSize: 16,
+    fontSize:normalize(16),
     fontWeight: 'bold',
   },
   

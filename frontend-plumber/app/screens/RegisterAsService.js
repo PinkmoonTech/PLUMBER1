@@ -26,7 +26,7 @@ const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 const scale = (size) => (windowWidth / 320) * size;
 const normalize = (size) => {
   const newSize = scale(size);
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "android") {
     return Math.round(PixelRatio.roundToNearestPixel(newSize));
   } else {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
@@ -325,7 +325,7 @@ const RegisterAsService = ({ navigation }) => {
 
 
             {/* Dropdown for selecting registration type */}
-            < View style={styles.inputContainerplumber}>
+            < View style={styles.inputContainer}>
               <Picker
                 selectedValue={registrationType}
                 style={styles.picker}
@@ -545,16 +545,19 @@ const styles = StyleSheet.create({
   uploadContainer: {
     marginBottom: normalize(10),
     width: windowWidth * 0.9,
-    backgroundColor: "#8b4513",
+  
+    
   },
   submitContainer: {
-    marginBottom: normalize(50),
+    marginBottom: normalize(5),
     width: windowWidth * 0.9,
   },
   picker: {
     height: normalize(40),
     width: "100%",
-    marginBottom: normalize(2),
+    marginBottom: normalize(1),
+    marginTop:1,
+    
   },
   inputContainer: {
     width: windowWidth * 0.9,
@@ -563,7 +566,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "gray",
     padding: normalize(1),
-    alignItems: "center",
+    justifyContent: 'center',
+
   },
   dateOfBirthContainer: {
     width: windowWidth * 0.9,
@@ -576,14 +580,14 @@ const styles = StyleSheet.create({
   textArea: {
     height: normalize(60),
   },
-  inputContainerplumber: {
-    width: windowWidth * 0.9,
-    marginBottom: normalize(12),
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: "gray",
-    padding: normalize(1),
-  },
+  // inputContainerplumber: {
+  //   width: windowWidth * 0.9,
+  //   marginBottom: normalize(12),
+  //   borderWidth: 1,
+  //   borderRadius: 5,
+  //   borderColor: "gray",
+  //   padding: normalize(1),
+  // },
 });
 
 export default RegisterAsService;

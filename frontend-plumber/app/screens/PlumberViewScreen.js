@@ -25,7 +25,7 @@ const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 const scale = (size) => (windowWidth / 320) * size;
 const normalize = (size) => {
   const newSize = scale(size);
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "android") {
     return Math.round(PixelRatio.roundToNearestPixel(newSize));
   } else {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
