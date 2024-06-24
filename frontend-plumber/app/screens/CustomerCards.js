@@ -134,50 +134,137 @@
 
 
 
-import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet,Dimensions,Platform,PixelRatio} from 'react-native';
+// import React from 'react';
+// import { TouchableOpacity, View, Text, StyleSheet,Dimensions,Platform,PixelRatio} from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+// import Footer from "./Footer";
+// import Header from "./Header";
+// import { ScrollView } from 'react-native-gesture-handler';
+
+// const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
+
+// const scale = (size) => (windowWidth / 320) * size;
+// const normalize = (size) => {
+//   const newSize = scale(size);
+//   if (Platform.OS === "android") {
+//     return Math.round(PixelRatio.roundToNearestPixel(newSize));
+//   } else {
+//     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+//   }
+// };
+
+
+// const CustomerCards = () => {
+//   const navigation = useNavigation();
+
+//   return (
+//     <View style={{ flex: 1 }}> 
+//     <Header/>
+//     <ScrollView contentContainerStyle={styles.container}>
+//       {/* Plumber Card */}
+//       <TouchableOpacity
+//         style={styles.card}
+//         onPress={() => navigation.navigate('Service i')}
+//       >
+//         <Text style={styles.cardText}>Plumber</Text>
+//       </TouchableOpacity>
+
+//       {/* Electrician Card */}
+//       <TouchableOpacity
+//         style={styles.card}
+//         onPress={() => navigation.navigate('Home')}
+//       >
+//         <Text style={styles.cardText}>Electrician</Text>
+//       </TouchableOpacity>
+//       </ScrollView>
+//       <Footer/>
+//     </View>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flexDirection: 'row',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     marginTop: normalize (20),
+//     // marginBottom: 474, 
+//     // padding: normalize(120),
+//   },
+//   card: {
+//     width: normalize(100),
+//     height: normalize(100),
+//     backgroundColor: '#007bff',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     borderRadius: normalize(10),
+//     marginHorizontal: normalize(10),
+//   },
+//   cardText: {
+//     color: 'white',
+//     fontSize:normalize(16),
+//     fontWeight: 'bold',
+//   },
+  
+// });
+
+// export default CustomerCards;
+
+
+import React, { useState } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet, Dimensions, Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Footer from "./Footer";
 import Header from "./Header";
 import { ScrollView } from 'react-native-gesture-handler';
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
+const { width: windowWidth } = Dimensions.get("window");
 
 const scale = (size) => (windowWidth / 320) * size;
 const normalize = (size) => {
   const newSize = scale(size);
-  if (Platform.OS === "android") {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize));
-  } else {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
-  }
+  return Math.round(PixelRatio.roundToNearestPixel(newSize));
 };
-
 
 const CustomerCards = () => {
   const navigation = useNavigation();
+  const [registrationType, setRegistrationType] = useState('plumber'); // Default to plumber
+
+  const navigateToDetails = () => {
+    if (registrationType === 'plumber') {
+      navigation.navigate('Service i'); // Navigate to Plumber Details Screen
+    } else if (registrationType === 'electrician') {
+      navigation.navigate('Service i'); // Navigate to Electrician Details Screen
+    }
+  };
 
   return (
-    <View style={{ flex: 1 }}> 
-    <Header/>
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* Plumber Card */}
-      <TouchableOpacity
-        style={styles.card}
-        onPress={() => navigation.navigate('Service i')}
-      >
-        <Text style={styles.cardText}>Plumber</Text>
-      </TouchableOpacity>
+    <View style={{ flex: 1 }}>
+      <Header />
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Plumber Card */}
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => {
+            setRegistrationType('plumber');
+            navigateToDetails();
+          }}
+        >
+          <Text style={styles.cardText}>Plumber</Text>
+        </TouchableOpacity>
 
-      {/* Electrician Card */}
-      <TouchableOpacity
-        style={styles.card}
-        onPress={() => navigation.navigate('Home')}
-      >
-        <Text style={styles.cardText}>Electrician</Text>
-      </TouchableOpacity>
+        {/* Electrician Card */}
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => {
+            setRegistrationType('electrician');
+            navigateToDetails();
+          }}
+        >
+          <Text style={styles.cardText}>Electrician</Text>
+        </TouchableOpacity>
       </ScrollView>
-      <Footer/>
+      <Footer />
     </View>
   );
 };
@@ -187,9 +274,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: normalize (20),
-    // marginBottom: 474, 
-    // padding: normalize(120),
+    marginTop: normalize(20),
   },
   card: {
     width: normalize(100),
@@ -202,12 +287,9 @@ const styles = StyleSheet.create({
   },
   cardText: {
     color: 'white',
-    fontSize:normalize(16),
+    fontSize: normalize(16),
     fontWeight: 'bold',
   },
-  
 });
 
 export default CustomerCards;
-
-

@@ -47,7 +47,7 @@ const PlumberViewScreen = ({ navigation }) => {
   const fetchRegistrationData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.112:3000/registerascustomers"
+        "http://192.168.0.113:3000/registerasservice"
       );
       console.log(response.data); // Debug: Log fetched data
       setRegistrationData(response.data); // Set registration data in state
@@ -104,14 +104,14 @@ const PlumberViewScreen = ({ navigation }) => {
       <MaterialIcons name="phone" size={15} color="black" style={styles.icon} />
       <Text style={styles.cardText}>{registration.phoneNumber}</Text>
     </View>
-    {/* <View style={styles.iconContainer}>
+     <View style={styles.iconContainer}>
       <MaterialCommunityIcons name="cash" size={15} color="black" style={styles.icon} />
       <Text style={styles.cardText}>{registration.charges}</Text>
     </View>
     <View style={styles.iconContainer}>
       <MaterialCommunityIcons name="map-marker" size={15} color="black" style={styles.icon} />
       <Text style={styles.cardText}>{registration.city}</Text>
-    </View> */}
+    </View> 
 
 
         <View style={styles.buttonContainer}>

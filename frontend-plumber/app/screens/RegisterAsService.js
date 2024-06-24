@@ -230,57 +230,151 @@ const RegisterAsService = ({ navigation }) => {
   
 
 
+  // const handleRegistration = async () => {
+  //   setError(''); // Clear previous errors
+
+  //   const requestBody = {
+  //     registrationType,
+  //     name,
+  //     dob: dob.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+  //     phoneNumber,
+  //     pin,
+  //     confirmPin,
+  //     altPhoneNumber,
+  //     email,
+  //     country,
+  //     state,
+  //     city,
+  //     address,
+  //     identityCard,
+  //     idNumber,
+  //     charges,
+  //   };
+
+  //   if (idProofImage) {
+  //     const idProofFileName = idProofImage.split('/').pop();
+  //     const idProofFileType = idProofFileName.split('.').pop();
+  //     requestBody.idProofImage = {
+  //       uri: idProofImage,
+  //       name: idProofFileName,
+  //       type: `image/${idProofFileType}`,
+  //     };
+  //   }
+
+  //   if (photo) {
+  //     const photoFileName = photo.split('/').pop();
+  //     const photoFileType = photoFileName.split('.').pop();
+  //     requestBody.photo = {
+  //       uri: photo,
+  //       name: photoFileName,
+  //       type: `image/${photoFileType}`,
+  //     };
+  //   }
+
+  //   try {
+  //     const response = await fetch('http://192.168.0.113:3000/register', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(requestBody),
+  //     });
+
+
+  //     const result = await response.json();
+  //     if (response.ok) {
+  //       alert('Registration successful');
+  //     } else {
+  //       setError(result.error || 'Registration failed');
+  //     }
+  //   } catch (err) {
+  //     console.error('Fetch error:', err);
+  //     // setError('An error occurred. Please try again later.');
+  //     // if (err instanceof SyntaxError && err.message.includes('JSON')) {
+  //     //   console.error('Invalid JSON response from server:', err);
+  //     //   setError('Server returned invalid data. Please try again later.');
+  //     // } else {
+  //     //   setError('Network error. Please check your internet connection.');
+  //     // }
+  //   }
+  // };
+
+  // Example: Update state variables from form inputs
+
+
+  
   const handleRegistration = async () => {
     setError(''); // Clear previous errors
+  
+    const formData = new FormData();
+    formData.append('registrationType', registrationType);
+    formData.append('name', name);
+    formData.append('dob', dob.toISOString().split('T')[0]); // Format date as YYYY-MM-DD
+    formData.append('phoneNumber', phoneNumber);
+    formData.append('pin', pin);
+    formData.append('confirmPin', confirmPin);
+    formData.append('altPhoneNumber', altPhoneNumber);
+    formData.append('email', email);
+    formData.append('country', country);
+    formData.append('state', state);
+    formData.append('city', city);
+    formData.append('address', address);
+    formData.append('identityCard', identityCard);
+    formData.append('idNumber', idNumber);
+    formData.append('charges', charges);
+    const requestBody = formData;
+    
+    // if (idProofImage) {
+    //   formData.append('idProofImage', {
+    //     uri: idProofImage,
+    //     name: 'idProofImage.jpg', // or another suitable file name
+    //     type: 'image/jpeg' // or another suitable mime type
+    //   });
+    // }
+  
+    // if (photo) {
+    //   formData.append('photo', {
+    //     uri: photo,
+    //     name: 'photo.jpg', // or another suitable file name
+    //     type: 'image/jpeg' // or another suitable mime type
+    //   });
+    // }
 
-    const requestBody = {
-      registrationType,
-      name,
-      dob: dob.toISOString().split('T')[0], // Format date as YYYY-MM-DD
-      phoneNumber,
-      pin,
-      confirmPin,
-      altPhoneNumber,
-      email,
-      country,
-      state,
-      city,
-      address,
-      identityCard,
-      idNumber,
-      charges,
-    };
+
 
     if (idProofImage) {
-      const idProofFileName = idProofImage.split('/').pop();
-      const idProofFileType = idProofFileName.split('.').pop();
-      requestBody.idProofImage = {
-        uri: idProofImage,
-        name: idProofFileName,
-        type: `image/${idProofFileType}`,
-      };
-    }
-
-    if (photo) {
-      const photoFileName = photo.split('/').pop();
-      const photoFileType = photoFileName.split('.').pop();
-      requestBody.photo = {
-        uri: photo,
-        name: photoFileName,
-        type: `image/${photoFileType}`,
-      };
-    }
+          const idProofFileName = idProofImage.split('/').pop();
+          const idProofFileType = idProofFileName.split('.').pop();
+          requestBody.idProofImage = {
+            uri: idProofImage,
+            name: idProofFileName,
+            type: `image/${idProofFileType}`,
+            
+          };
+        }
+    
+        if (photo) {
+          const photoFileName = photo.split('/').pop();
+          const photoFileType = photoFileName.split('.').pop();
+          requestBody.photo = {
+            uri: photo,
+            name: photoFileName,
+            type: `image/${photoFileType}`,
+          };
+        }
 
     try {
-      const response = await fetch('http://192.168.0.112:3000/register', {
+      const response = await fetch('http://192.168.0.113:3000/register', {
         method: 'POST',
+        body: formData,
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+          // 'content-Type':'applicaion/json',
+          
         },
-        body: JSON.stringify(requestBody),
+        
       });
-
-
+  
       const result = await response.json();
       if (response.ok) {
         alert('Registration successful');
@@ -289,17 +383,14 @@ const RegisterAsService = ({ navigation }) => {
       }
     } catch (err) {
       console.error('Fetch error:', err);
-      // setError('An error occurred. Please try again later.');
-      // if (err instanceof SyntaxError && err.message.includes('JSON')) {
-      //   console.error('Invalid JSON response from server:', err);
-      //   setError('Server returned invalid data. Please try again later.');
-      // } else {
-      //   setError('Network error. Please check your internet connection.');
-      // }
+      setError('An error occurred. Please try again later.');
     }
   };
-
-  // Example: Update state variables from form inputs
+  
+  
+  
+  
+  
   const handleNameChange = (event) => {
     setName(event.target.value);
   };

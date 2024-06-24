@@ -88,7 +88,7 @@ const RegisterAsCustomer = ({ navigation }) => {
     };
 
     try {
-      const response = await fetch('http://192.168.0.112:3000/registerascustomers', {
+      const response = await fetch('http://192.168.0.113:3000/registerascustomers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
