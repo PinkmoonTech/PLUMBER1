@@ -183,8 +183,9 @@ const Login = () => {
               <Text style={styles.modalText}>Admin Email: xxxx@gmail.com</Text>
 
               <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Close</Text>
+                <Text style={styles.closeButtonText}>Cancle</Text>
               </TouchableOpacity>
+               
             </View>
           </View>
         </Modal>
@@ -292,13 +293,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    
   },
   modalView: {
     backgroundColor: 'white',
     borderRadius: 1,
     padding: 20,
-    alignItems: 'center',
+    // alignItems: 'center',
     elevation: 5,
+    borderRadius:15
   },
   modalText: {
     marginBottom: 10,
@@ -310,13 +313,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingVertical: 6,
     paddingHorizontal: 20,
-    backgroundColor: '#007bff',
+    // backgroundColor: '#007bff',
     // borderRadius: 5,
   },
   closeButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    // textAlign: 'center',
+    color: 'black',
+    // fontWeight: 'bold',
+    textAlign:"center"
   },
   registerText: {
     color: "#6A1B9A",

@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   link: {
     textDecorationLine: 'none',
-    color: 'white',
+    color: '#c1205f',
     fontWeight: 'bold',
   },
 });

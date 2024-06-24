@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   
   },
   overlayText: {
-    color: "#800080",
+    color: "#c1205f",
     fontSize: 22,
     // textAlign: "center",
     // paddingHorizontal: 20,

@@ -74,17 +74,17 @@ const PlumberViewScreen = ({ navigation }) => {
     let filteredData = registrationData.filter(
       (registration) =>
         isPlumberSearch ||
-        registration.name.toLowerCase().includes(lowerCaseQuery) 
-        // registration.city.toLowerCase().includes(lowerCaseQuery) ||
-        // registration.charges.toString().toLowerCase().includes(lowerCaseQuery)
+        registration.name.toLowerCase().includes(lowerCaseQuery) ||
+        registration.city.toLowerCase().includes(lowerCaseQuery) ||
+        registration.charges.toString().toLowerCase().includes(lowerCaseQuery)
     );
 
     // Sort filtered data based on sort option
-    // if (sortOption === "charge") {
-    //   filteredData.sort((a, b) => a.charges - b.charges);
-    // } else if (sortOption === "location") {
-    //   filteredData.sort((a, b) => a.city.localeCompare(b.city));
-    // }
+    if (sortOption === "charge") {
+      filteredData.sort((a, b) => a.charges - b.charges);
+    } else if (sortOption === "location") {
+      filteredData.sort((a, b) => a.city.localeCompare(b.city));
+    }
 
 
 
@@ -151,8 +151,8 @@ const PlumberViewScreen = ({ navigation }) => {
       <Header />
       
       <ScrollView contentContainerStyle={styles.container}>
-        {/* <Text style={styles.header}></Text> */}
-        {/* <TouchableOpacity
+         <Text style={styles.header}></Text> 
+         <TouchableOpacity
           style={styles.searchBoxContainer}
           onPress={() => this.textInput.focus()}
         >
@@ -171,7 +171,7 @@ const PlumberViewScreen = ({ navigation }) => {
             color="black"
             style={styles.searchIcon}
           />
-        </TouchableOpacity> */}
+        </TouchableOpacity> 
         {registrationData.length === 0 ? (
           <Text>Loading plumber details...</Text>
         ) : (
@@ -231,7 +231,14 @@ const styles = StyleSheet.create({
     padding: normalize(6),
     alignItems: "flex-start",
     backgroundColor:"#d3d3d3",
-    
+    shadowOpacity: 20.25, // Shadow opacity
+    shadowRadius: 30.84, // Shadow blur radius
+    elevation: 15, // Elevation for Android
+    shadowColor: "green", // Shadow color
+    shadowOffset: {
+      width: 50,
+      height: 2,
+    },
   },
   cardImage: {
     width: normalize(100),

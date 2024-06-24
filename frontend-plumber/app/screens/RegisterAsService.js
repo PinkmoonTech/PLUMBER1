@@ -542,14 +542,14 @@ const RegisterAsService = ({ navigation }) => {
             </View>
             <TextInput
               style={styles.input}
-              placeholder="City"
+              placeholder="location (ex:vijayawada)"
               value={city}
               onChangeText={setCity}
             />
 
             <TextInput
               style={[styles.input, styles.textArea]}
-              placeholder="Address"
+             placeholder="Home Address                                        Street name"
               value={address}
               onChangeText={setAddress}
               multiline={true}
@@ -584,7 +584,7 @@ const RegisterAsService = ({ navigation }) => {
 
             <TextInput
               style={styles.input}
-              placeholder="Charges per day"
+              placeholder="Charges per day (ex:250 ₹)"
               value={charges}
               onChangeText={setCharges}
               keyboardType="numeric"
